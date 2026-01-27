@@ -5,31 +5,36 @@ import input.*;
 public class Utils {
 	
 	public static int generateRandom(int min, int max) {
-		return (int)(Math.random() * (max - min + 1)) + min;
+		return (int)(Math.random() * (max - min)) + min;
 	}
 
-	public static void displayMenu() {
-		System.out.println("""
+	public static int displayMenu() {
+		System.out.print("""
 				
 			========= MENU =========
 			1. Start Game
 			2. Set difficulty
-			2. View Instructions
-			3. Exit
+			3. View Instructions
+			4. Exit
 			========================
 
-			""");
+			Select an option: """);
+			
+			int option = Input.readInteger(1, 4);
+			return option;
 	}
 
 	public static int displaySubmenu() {
-		System.out.println("""
+		System.out.print("""
 				
 			===== DIFFICULTY =====
 			1. Easy
 			2. Medium
 			3. Hard
 			======================
-			""");
+
+			Choose a level: """);
+
 		int level = Input.readInteger(1, 3);
 		return level;
 	}
@@ -46,5 +51,15 @@ public class Utils {
 		return board[row][col] == 0;
 	}
 
-
+	public static String getSymbol(int value) {
+		String symbol = switch(value) {
+			case 0 -> "  ";
+			case 1 -> "X ";
+			case 2 -> "B ";
+			case 3 -> "M ";
+			case 4 -> "V ";
+			default -> "";
+		};
+		return symbol;
+	}
 }

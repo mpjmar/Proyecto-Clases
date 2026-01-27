@@ -1,9 +1,7 @@
 
 
 import board.Board;
-import boardElements.Character;
 import utils.*;
-import exceptions.*;
 import input.*;
 
 
@@ -11,28 +9,33 @@ public class App {
     public static void main(String[] args) throws Exception {
 
 		int option = -1;
-		Board board =;
+		int rows = -1;
+		int cols = -1;
+		int level = 1;
+		Board board = new Board(0, 0);
 
 		do {
-			Utils.displayMenu();
-			System.out.print("Select an option: ");
-			option = Input.readInteger(1, 4);
+			option = Utils.displayMenu();
 			switch (option) {
 				case 1:
 					System.out.println("Please, enter the board size: ");
 					System.out.print("Heigth (8 - 20): ");
-					int height = Input.readInteger(8, 20);
+					rows = Input.readInteger(8, 20);
 					System.out.print("Width (8 - 20): ");
-					int width = Input.readInteger(8, 20);
-					board = new Board(height, width);
+					cols = Input.readInteger(8, 20);
+					board = new Board(rows, cols);
+					board.setObstacles(rows, cols, level);
+					System.out.println(board);
 					break;
 				case 2:
-					int level = Utils.displaySubmenu();
-					board.setObstacles(height, width, level);
+					level = Utils.displaySubmenu();
+					break;
 				case 3:
 					Utils.displayInstructions();
 					break;
+				default:
+					break;
 			}
-		} while (option != 3);
+		} while (option != 4);
 	}
 }

@@ -11,9 +11,4 @@ public abstract class BoardElement {
 		this.pos = new Position(row, col);
 	}
 
-	public static String getSymbol(int value) {
-		String symbol = "";
-		// TODO definir simbolos
-		return symbol;
-	}
 }
