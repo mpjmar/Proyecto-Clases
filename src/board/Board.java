@@ -1,5 +1,7 @@
 package board;
 
+import java.util.ArrayList;
+
 import boardElements.*;
 import utils.*;
 
@@ -8,6 +10,7 @@ public class Board {
 	private int rows;
 	private int cols;
 	private int[][] board;
+	private ArrayList<BoardElement> elements;
 
 	public Board(int rows, int cols) {
 		this.rows = rows;

@@ -14,12 +14,12 @@ public class Position {
 		return this.row;
 	}
 
-	public int getCol() {
-		return this.col;
-	}
-
 	public void setRow(int row) {
 		this.row = row;
+	}
+
+	public int getCol() {
+		return this.col;
 	}
 
 	public void setCol(int col) {

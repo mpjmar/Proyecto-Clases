@@ -31,7 +31,7 @@ public class App {
 					level = Utils.displaySubmenu();
 					break;
 				case 3:
-					Utils.displayInstructions();
+					Utils.gameMechanics();
 					break;
 				default:
 					break;

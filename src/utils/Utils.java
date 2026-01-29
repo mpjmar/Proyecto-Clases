@@ -14,7 +14,7 @@ public class Utils {
 			========= MENU =========
 			1. Start Game
 			2. Set difficulty
-			3. View Instructions
+			3. Game Mechanics
 			4. Exit
 			========================
 
@@ -39,10 +39,10 @@ public class Utils {
 		return level;
 	}
 
-	public static void displayInstructions() {
+	public static void gameMechanics() {
 		System.out.println("""
 				
-			========= INSTRUCTIONS =========
+			========= GAME MECHANICS =========
 			
 				""");
 	}
