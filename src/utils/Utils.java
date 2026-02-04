@@ -1,5 +1,8 @@
 package utils;
 
+import java.util.ArrayList;
+
+import boardElements.BoardElement;
 import input.*;
 
 public class Utils {
@@ -47,19 +50,37 @@ public class Utils {
 				""");
 	}
 
-	public static boolean isEmpty(int[][] board, int row, int col) {
-		return board[row][col] == 0;
+	public static boolean isEmpty(ArrayList<BoardElement> gameElements, int row, int col) {
+		for (BoardElement e : gameElements) {
+			if (e.getRow() == row && e.getCol() == col)
+				return false;
+		}	
+		return true;
 	}
 
-	public static String getSymbol(int value) {
+	public static String displaySymbol(int value) {
+		final String GREEN = "\033[0;32m";
+		final String RED = "\033[0;31m";
+		final String BLUE = "\033[0;34m";
+		final String RESET = "\033[0m";
+
 		String symbol = switch(value) {
 			case 0 -> "  ";
-			case 1 -> "X ";
-			case 2 -> "B ";
-			case 3 -> "M ";
-			case 4 -> "V ";
+			case 1 -> "█ ";
+			case 2 -> GREEN + "● " + RESET;
+			case 3 -> RED + "▲ " + RESET;
+			case 4 -> BLUE + "★ " + RESET;
 			default -> "";
 		};
 		return symbol;
+	}
+
+	public static int calcDistance(Position p1, Position p2) {
+		return Math.abs(p1.getRow() - p2.getRow()) + Math.abs(p1.getCol() - p2.getCol());
+	}
+
+	public static void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
 	}
 }

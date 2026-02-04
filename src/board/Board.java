@@ -10,7 +10,6 @@ public class Board {
 	private int rows;
 	private int cols;
 	private int[][] board;
-	private ArrayList<BoardElement> elements;
 
 	public Board(int rows, int cols) {
 		this.rows = rows;
@@ -18,19 +17,40 @@ public class Board {
 		board = new int[rows][cols];
 	}
 
-	public int[][] getBoard() {
-		return this.board;
+	public int getRows() {
+		return rows;
 	}
 
-	public void setObstacles(int rows, int cols, int level) {
-		int totalCells = rows * cols;
-		int obstacles = level == 1 ? totalCells / 10 : level == 2 ? totalCells / 6 : totalCells / 4;
-		for (int i = 0; i < obstacles; i++) {
-			int row = Utils.generateRandom(0, rows);
-			int col = Utils.generateRandom(0, cols);
-			if (Utils.isEmpty(board, row, col))
-				this.board[row][col] = 1;
-		}
+	public void setRows(int rows) {
+		this.rows = rows;
+	}
+
+	public int getCols() {
+		return cols;
+	}
+
+	public void setCols(int cols) {
+		this.cols = cols;
+	}
+
+	public int[][] getBoard() {
+		return board;
+	}
+
+	public int getCell(int row, int col) {
+		return board[row][col];
+	}
+
+	public void setCell(int row, int col, int value) {
+		board[row][col] = value;
+	}
+
+	public int getCell(Position pos) {
+		return board[pos.getRow()][pos.getCol()];
+	}
+
+	public void setCell(Position pos, int value) {
+		this.board[pos.getRow()][pos.getCol()] = value;
 	}
 
 	@Override
@@ -40,11 +60,11 @@ public class Board {
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
 				map += "| " + switch (board[i][j]) {
-					case 0 -> Utils.getSymbol(0);
-					case 1 -> Utils.getSymbol(1);
-					case 2 -> Utils.getSymbol(2);
-					case 3 -> Utils.getSymbol(3);
-					case 4 -> Utils.getSymbol(4);
+					case 0 -> Utils.displaySymbol(0);
+					case 1 -> Utils.displaySymbol(1);
+					case 2 -> Utils.displaySymbol(2);
+					case 3 -> Utils.displaySymbol(3);
+					case 4 -> Utils.displaySymbol(4);
 					default -> "";
 				};
 			}
@@ -59,5 +79,25 @@ public class Board {
 			map += " ---";
 		map += "\n";
 		return map;
+	}
+
+	public void clearBoard() {
+		for (int i = 0; i < board.length; i++)
+			for (int j = 0; j < board[i].length; j++)
+				board[i][j] = 0;
+	}
+
+	public void placeElements(ArrayList <BoardElement> elements) {
+		int value = 0;
+		for (BoardElement e : elements) {
+			value = switch (e.getClass().getSimpleName()) {
+				case "Obstacle" -> 1;
+				case "Runner" -> 2;
+				case "Chaser" -> 3;
+				case "Life" -> 4;
+				default -> 0;
+			};
+			setCell(e.getPos(), value);
+		}
 	}
 }

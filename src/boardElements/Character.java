@@ -4,18 +4,13 @@ import utils.Utils;
 
 public abstract class Character extends BoardElement {
 	
-	private String type;
 	private int life;
 	private int speed;
-	private String chaser = "C";
-	private String runner = "R";
 
-	public Character(int row, int col, String type) {
+	public Character(int row, int col) {
 		super(row, col);
 		this.life = Utils.generateRandom(10, 20);
 		this.speed = Utils.generateRandom(1, 5);
-		this.type = type;
-		setSymbol(type.equals("chaser") ? chaser : runner);
 	}
 
 	public int getLife() {
