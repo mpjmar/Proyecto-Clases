@@ -6,6 +6,7 @@ import board.Board;
 import boardElements.*;
 import utils.*;
 import input.*;
+import strategies.Movements;
 
 
 public class Game {
@@ -55,7 +56,8 @@ public class Game {
 					character.setTarget(gameElements);
 			board.placeElements(gameElements);
 			System.out.println(board);
-			Movements.moveCharacters(gameElements);
+			//System.out.println("Runners: %d  |  Chasers: %d", );
+			//Movements.moveCharacters(gameElements);
             Thread.sleep(1000);
         } while (true);
     }
