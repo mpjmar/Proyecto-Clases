@@ -37,15 +37,15 @@ public class Runner extends Character implements Target {
 		this.target = target;
 	}
 
-	public static void setRunners(Board board, int level, ArrayList<BoardElement> gameElements) {
+	public static void generateRunners(Board board, int level, ArrayList<BoardElement> gameElements) {
 		int row;
 		int col;
 		int totalCells = board.getRows() * board.getCols();
 
 		int maxElements = level == 1 ? totalCells / 20 : level == 2 ? totalCells / 15 : totalCells / 10;
-		int elementsNum = Utils.generateRandom(maxElements / 2, maxElements);
+		int elements = Utils.generateRandom(maxElements / 2, maxElements);
 		
-		for (int i = 0; i < elementsNum; i++) {
+		for (int i = 0; i < elements; i++) {
 			do {
 				row = Utils.generateRandom(0, board.getRows());
 				col = Utils.generateRandom(0, board.getCols());

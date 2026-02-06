@@ -91,7 +91,6 @@ public class Board {
 		for (BoardElement e : elements) {
 			value = switch (e.getClass().getSimpleName()) {
 				case "Obstacle" -> 1;
-				
 				case "Runner" -> 2;
 				case "Chaser" -> 3;
 				case "Life" -> 4;

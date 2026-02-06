@@ -10,7 +10,13 @@ import strategies.Movements;
 
 
 public class Game {
-    public static void main(String[] args) throws Exception {
+
+	public static final String GREEN = "\033[0;32m";
+	public static final String RED = "\033[0;31m";
+	public static final String BLUE = "\033[0;34m";
+	public static final String RESET = "\033[0m";
+
+	public static void main(String[] args) throws Exception {
 
 		int option = -1;
 		int rows = -1;
@@ -44,9 +50,9 @@ public class Game {
 		Board board = new Board(rows, cols);
 		ArrayList<BoardElement> gameElements = new ArrayList<BoardElement>();
 
-		Obstacle.setObstacles(board, level, gameElements);
-		Runner.setRunners(board, level, gameElements);
-		Chaser.setChasers(board, level, gameElements);
+		Obstacle.generateObstacles(board, level, gameElements);
+		Runner.generateRunners(board, level, gameElements);
+		Chaser.generateChasers(board, level, gameElements);
 		
         do {
 			Utils.clearConsole();
@@ -56,9 +62,14 @@ public class Game {
 					character.setTarget(gameElements);
 			board.placeElements(gameElements);
 			System.out.println(board);
-			//System.out.println("Runners: %d  |  Chasers: %d", );
-			//Movements.moveCharacters(gameElements);
+			System.out.printf("Runners: %s%d%s  |  Chasers: %s%d%s%n",
+				GREEN, Utils.countElements(gameElements, "Runner"), RESET, 
+				RED, Utils.countElements(gameElements, "Chaser"), RESET);
+			Movements.move(gameElements);
+
             Thread.sleep(1000);
         } while (true);
     }
+
+	
 }
