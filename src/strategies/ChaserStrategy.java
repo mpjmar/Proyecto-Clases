@@ -26,12 +26,17 @@ public class ChaserStrategy {
 		int minDist = Integer.MAX_VALUE;
 		Position bestPos = null;
 		for (Position p : avalPos) {
-			if (MovUtils.isWithinLimits(board, p) && MovUtils.isEmpty(board, p)) {
-				int dist = Position.calcDistance(c.getPos(), p);
+			if (c.getTarget() != null && MovUtils.isWithinLimits(board, p) && MovUtils.isEmpty(gameElements, p.getRow(), p.getCol())) {
+				int dist = Position.calcDistance(c.getTarget().getPos(), p);
 				if (dist < minDist) {
 					minDist = dist;
 					bestPos = new Position(p.getRow(), p.getCol());
 				}
+			}
+			else {
+				do {
+					bestPos = MovUtils.randomPos(c.getPos());
+				} while (!(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol())));
 			}
 		}
 		return bestPos;

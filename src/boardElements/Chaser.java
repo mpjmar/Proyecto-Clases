@@ -7,7 +7,7 @@ import utils.ListUtils;
 import utils.Position;
 import utils.Utils;
 
-public class Chaser extends Character implements Target {
+public class Chaser extends Role implements Target {
 
 	private Target target;
     

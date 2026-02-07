@@ -45,11 +45,11 @@ public class Board {
 	}
 
 	public int getCell(Position pos) {
-		return board[pos.getRow()][pos.getCol()];
+		return getCell(pos.getRow(), pos.getCol());
 	}
 
 	public void setCell(Position pos, int value) {
-		this.board[pos.getRow()][pos.getCol()] = value;
+		setCell(pos.getRow(), pos.getCol(), value);
 	}
 
 	@Override

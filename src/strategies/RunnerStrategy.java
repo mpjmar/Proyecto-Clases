@@ -23,18 +23,21 @@ public class RunnerStrategy {
 			new Position(r.getRow(), r.getCol() + 1),
 			new Position(r.getRow(), r.getCol() - 1),
 		};
-
-		target????
 		
 		int maxDist = 0;
 		Position bestPos = null;
 		for (Position p : avalPos) {
-			if (MovUtils.isWithinLimits(board, p) && MovUtils.isEmpty(board, p) && MovUtils.isSafe(gameElements, p)) {
-				int dist = Position.calcDistance(r.getPos(), p);
+			if (r.getTarget() != null && MovUtils.isWithinLimits(board, p) && MovUtils.isEmpty(gameElements, p.getRow(), p.getCol()) && MovUtils.isSafe(gameElements, p)) {
+				int dist = Position.calcDistance(r.getTarget().getPos(), p);
 				if (dist > maxDist) {
 					maxDist = dist;
 					bestPos = new Position(p.getRow(), p.getCol());
 				}
+			}
+			else {
+				do {
+					bestPos = MovUtils.randomPos(r.getPos());
+				} while (!(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol())));
 			}
 		}
 		return bestPos;

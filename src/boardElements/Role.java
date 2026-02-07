@@ -2,12 +2,12 @@ package boardElements;
 
 import utils.Utils;
 
-public abstract class Character extends BoardElement {
+public abstract class Role extends BoardElement {
 	
 	private int life;
 	private int speed;
 
-	public Character(int row, int col) {
+	public Role(int row, int col) {
 		super(row, col);
 		this.life = Utils.generateRandom(10, 20);
 		this.speed = Utils.generateRandom(1, 5);

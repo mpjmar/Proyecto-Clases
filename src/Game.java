@@ -6,6 +6,7 @@ import board.Board;
 import boardElements.*;
 import utils.*;
 import input.*;
+import strategies.Fight;
 import strategies.Movements;
 
 

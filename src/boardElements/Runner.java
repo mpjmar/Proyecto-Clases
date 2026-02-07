@@ -7,7 +7,7 @@ import utils.ListUtils;
 import utils.Position;
 import utils.Utils;
 
-public class Runner extends Character implements Target {
+public class Runner extends Role implements Target {
 
 	private Target target;
 
