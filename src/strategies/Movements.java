@@ -2,22 +2,21 @@ package strategies;
 
 import java.util.ArrayList;
 
+import board.Board;
 import boardElements.BoardElement;
 import boardElements.Chaser;
 import boardElements.Runner;
 
 public class Movements {
 
-	public static void move(ArrayList<BoardElement> gameElements) {
+	public static void move(ArrayList<BoardElement> gameElements, Board board) {
 		for (BoardElement e : gameElements) {
 			if (e instanceof Runner)
-				RunnerStrategy.moveRunner((Runner) e);
+				RunnerStrategy.moveRunner(gameElements, board, (Runner) e);
 			else if (e instanceof Chaser)
-				ChaserStrategy.moveChaser((Chaser) e);
+				ChaserStrategy.moveChaser(gameElements, board, (Chaser) e);
 		}
 	}
 
-	public static void checkSurroundings(ArrayList<BoardElement> gameElements, Character c) {
-		
-	}
+	
 }

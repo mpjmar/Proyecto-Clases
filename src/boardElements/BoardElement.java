@@ -4,7 +4,7 @@ import utils.*;
 
 public abstract class BoardElement {
 	
-	Position pos;
+	private Position pos;
 
 	public BoardElement() {
 		this.pos = new Position(0, 0);

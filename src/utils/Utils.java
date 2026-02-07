@@ -1,9 +1,5 @@
 package utils;
 
-import java.util.ArrayList;
-
-import board.Board;
-import boardElements.BoardElement;
 import input.*;
 
 public class Utils {
@@ -51,27 +47,6 @@ public class Utils {
 				""");
 	}
 
-	public static boolean isEmpty(ArrayList<BoardElement> gameElements, int row, int col) {
-		for (BoardElement e : gameElements) {
-			if (e.getRow() == row && e.getCol() == col)
-				return false;
-		}	
-		return true;
-	}
-
-	public static boolean isEmpty(Board board, Position pos) {
-		if (board.getCell(pos) == 0)
-			return true;
-		return false;
-	}
-
-	public static boolean isWithinLimits(Board board, Position pos) {
-		if (pos.getRow() >= 0 && pos.getRow() < board.getRows() &&
-			pos.getCol() >= 0 && pos.getCol() < board.getCols())
-			return true;
-		return false;
-	}
-
 	public static String displaySymbol(int value) {
 		final String GREEN = "\033[0;32m";
 		final String RED = "\033[0;31m";
@@ -87,18 +62,6 @@ public class Utils {
 			default -> "";
 		};
 		return symbol;
-	}
-
-	public static int calcDistance(Position p1, Position p2) {
-		return Math.abs(p1.getRow() - p2.getRow()) + Math.abs(p1.getCol() - p2.getCol());
-	}
-
-	public static int countElements(ArrayList<BoardElement> gameElements, String character) {
-		int counter = 0;
-		for (BoardElement e : gameElements)
-			if (e.getClass().getSimpleName().equals(character))
-				counter++;
-		return counter;
 	}
 
 	public static void clearConsole() {

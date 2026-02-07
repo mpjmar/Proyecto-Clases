@@ -63,9 +63,9 @@ public class Game {
 			board.placeElements(gameElements);
 			System.out.println(board);
 			System.out.printf("Runners: %s%d%s  |  Chasers: %s%d%s%n",
-				GREEN, Utils.countElements(gameElements, "Runner"), RESET, 
-				RED, Utils.countElements(gameElements, "Chaser"), RESET);
-			Movements.move(gameElements);
+				GREEN, ListUtils.countElements(gameElements, "Runner"), RESET, 
+				RED, ListUtils.countElements(gameElements, "Chaser"), RESET);
+			Movements.move(gameElements, board);
 
             Thread.sleep(1000);
         } while (true);

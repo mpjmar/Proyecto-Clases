@@ -3,6 +3,7 @@ package boardElements;
 import java.util.ArrayList;
 
 import board.Board;
+import utils.ListUtils;
 import utils.Utils;
 
 public class Obstacle extends BoardElement {
@@ -27,7 +28,7 @@ public class Obstacle extends BoardElement {
 			do {
 				row = Utils.generateRandom(0, board.getRows());
 				col = Utils.generateRandom(0, board.getCols());
-			} while (!Utils.isEmpty(gameElements, row, col));
+			} while (!ListUtils.isEmpty(gameElements, row, col));
 			Obstacle obstacle = new Obstacle(row, col);
 			gameElements.add(obstacle);
 		}

@@ -3,11 +3,13 @@ package boardElements;
 import java.util.ArrayList;
 
 import board.Board;
+import utils.ListUtils;
+import utils.Position;
 import utils.Utils;
 
 public class Runner extends Character implements Target {
 
-	Target target;
+	private Target target;
 
 	public Runner() {
 		super(0, 0);
@@ -25,13 +27,15 @@ public class Runner extends Character implements Target {
 
 	@Override
 	public void setTarget(ArrayList<BoardElement> gameElements) {
-		int minDist = 0;
+		int minDist = Integer.MAX_VALUE;
 		Target target = null;
 		for (BoardElement e : gameElements) {
 			if (e instanceof Chaser) {
-				int dist = Utils.calcDistance(this.getPos(), e.getPos());
-				minDist = dist < minDist ? dist : minDist;
-				target = (Target) e;
+				int dist = Position.calcDistance(this.getPos(), e.getPos());
+				if (dist < minDist) {
+					minDist = dist;
+					target = (Target) e;
+				}
 			}
 		}
 		this.target = target;
@@ -49,7 +53,7 @@ public class Runner extends Character implements Target {
 			do {
 				row = Utils.generateRandom(0, board.getRows());
 				col = Utils.generateRandom(0, board.getCols());
-			} while (!Utils.isEmpty(gameElements, row, col));
+			} while (!ListUtils.isEmpty(gameElements, row, col));
 			Runner runner = new Runner(row, col);
 			gameElements.add(runner);
 		}

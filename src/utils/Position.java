@@ -47,4 +47,9 @@ public class Position {
 		return "Position: row " + this.row + "| col " + this.col + "\n";
 	}
 
+	// Manhattan distance
+	public static int calcDistance(Position p1, Position p2) {
+		return Math.abs(p1.getRow() - p2.getRow()) + Math.abs(p1.getCol() - p2.getCol());
+	}
+
 }
