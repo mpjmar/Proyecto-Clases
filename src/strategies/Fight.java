@@ -1,12 +1,21 @@
 package strategies;
 
+import java.util.ArrayList;
+
+import boardElements.BoardElement;
 import boardElements.Chaser;
 import boardElements.Runner;
 import utils.MovUtils;
 
 public class Fight {
+
+	public static void searchEnemies(ArrayList<BoardElement> elements) {
+		for (BoardElement e : elements)
+			if (e instanceof Chaser && MovUtils.isNeighbour(e.getPos(), ((Chaser) e).getTarget().getPos()))
+				fight((Chaser) e, (Runner) (((Chaser) e).getTarget()));
+	}
 	
-	public static void fight(Chaser c, Runner r) {
+	private static void fight(Chaser c, Runner r) {
 		if (MovUtils.isNeighbour(c.getPos(), r.getPos())) {
 			int cLife = c.getLife();
 			int rLife = r.getLife();

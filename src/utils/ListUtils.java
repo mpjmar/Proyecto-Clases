@@ -2,6 +2,9 @@ package utils;
 
 import java.util.ArrayList;
 import boardElements.BoardElement;
+import boardElements.Chaser;
+import boardElements.Role;
+import boardElements.Runner;
 
 public class ListUtils {
 	
@@ -13,11 +16,23 @@ public class ListUtils {
 		return true;
 	}
 
-	public static int countElements(ArrayList<BoardElement> gameElements, String character) {
+	public static int countCharacters(ArrayList<BoardElement> gameElements, String character) {
 		int counter = 0;
 		for (BoardElement e : gameElements)
 			if (e.getClass().getSimpleName().equals(character))
 				counter++;
 		return counter;
+	}
+
+	public static void updateList(ArrayList<BoardElement> gameElements) {
+		gameElements.removeIf(e -> e instanceof Role && ((Role) e).getLife() == 0);
+	}
+
+	public static String displayState(ArrayList<BoardElement> gameElements) {
+		String state = "";
+		for (BoardElement e : gameElements)
+			if ((e instanceof Chaser || e instanceof Runner) && ((Role) e).getLife() == 0)
+				state += "A " + e.getClass().getSimpleName() + " has died.\n";
+		return state;
 	}
 }

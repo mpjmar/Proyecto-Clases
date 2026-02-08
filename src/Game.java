@@ -50,7 +50,8 @@ public class Game {
 	public static void launch(int rows, int cols, int level) throws InterruptedException {
 		Board board = new Board(rows, cols);
 		ArrayList<BoardElement> gameElements = new ArrayList<BoardElement>();
-
+		int runners = 0;
+		int chasers = 0;
 		Obstacle.generateObstacles(board, level, gameElements);
 		Runner.generateRunners(board, level, gameElements);
 		Chaser.generateChasers(board, level, gameElements);
@@ -64,12 +65,17 @@ public class Game {
 			board.placeElements(gameElements);
 			System.out.println(board);
 			System.out.printf("Runners: %s%d%s  |  Chasers: %s%d%s%n",
-				GREEN, ListUtils.countElements(gameElements, "Runner"), RESET, 
-				RED, ListUtils.countElements(gameElements, "Chaser"), RESET);
+				GREEN, ListUtils.countCharacters(gameElements, "Runner"), RESET, 
+				RED, ListUtils.countCharacters(gameElements, "Chaser"), RESET);
 			Movements.move(gameElements, board);
-
+			Fight.searchEnemies(gameElements);
+			System.out.println(ListUtils.displayState(gameElements));
+			ListUtils.updateList(gameElements);
+			runners = ListUtils.countCharacters(gameElements, "Runner");
+			chasers = ListUtils.countCharacters(gameElements, "Chaser");
             Thread.sleep(1000);
-        } while (true);
+        } while (runners > 0 || chasers > 0);
+		Utils.displayWinner(gameElements);
     }
 
 	

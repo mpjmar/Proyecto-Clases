@@ -1,5 +1,10 @@
 package utils;
 
+import java.util.ArrayList;
+
+import boardElements.BoardElement;
+import boardElements.Chaser;
+import boardElements.Runner;
 import input.*;
 
 public class Utils {
@@ -67,5 +72,22 @@ public class Utils {
 	public static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+	}
+
+	public static void displayWinner(ArrayList<BoardElement> elements) {
+		final String CYAN_BOLD_BRIGHT = "\033[1;96m";
+		final String PURPLE_BRIGHT = "\033[0;95m";
+		final String RESET = "\033[0m";
+		String winner = "";
+		
+		for (BoardElement e : elements) {
+			if (e instanceof Chaser || e instanceof Runner)
+				winner = e.getClass().getSimpleName().toUpperCase();
+		}
+		System.out.printf("""
+				%s============================
+				==     %s%sS WIN!!!     %s==
+				============================%s
+				""", PURPLE_BRIGHT, CYAN_BOLD_BRIGHT, winner, PURPLE_BRIGHT, RESET);
 	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import board.Board;
 import boardElements.BoardElement;
+import boardElements.Chaser;
 import boardElements.Runner;
 import utils.MovUtils;
 import utils.Position;
@@ -13,15 +14,17 @@ public class RunnerStrategy {
 
 	public static void moveRunner(ArrayList<BoardElement> gameElements, Board board, Runner r) {
 		Position bestPos = calcBestPos(gameElements, board, r);
-		r.setPos(bestPos);
+		r.setRow(bestPos.getRow());
+		r.setCol(bestPos.getCol());
+		r.setPos(r.getRow(), r.getCol());
 	}
     
-	public static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Runner r) {
+	/* public static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Runner r) {
 		Position[] avalPos = {
-			new Position(r.getRow() - 1, r.getCol()),
-			new Position(r.getRow() + 1, r.getCol()),
 			new Position(r.getRow(), r.getCol() + 1),
+			new Position(r.getRow() - 1, r.getCol()),
 			new Position(r.getRow(), r.getCol() - 1),
+			new Position(r.getRow() + 1, r.getCol()),
 		};
 		
 		int maxDist = 0;
@@ -34,13 +37,39 @@ public class RunnerStrategy {
 					bestPos = new Position(p.getRow(), p.getCol());
 				}
 			}
-			else {
-				do {
-					bestPos = MovUtils.randomPos(r.getPos());
-				} while (!(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol())));
-			}
+		}
+		if (bestPos == null) {
+			do {
+				bestPos = MovUtils.randomPos(r.getPos());
+			} while (!(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol())));
 		}
 		return bestPos;
-	}
+	} */
 
+		private static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Runner r) {
+		Position bestPos = null;
+		int mov = 0;
+		int distRow = 0;
+		int distCol = 0;
+
+		if (r.getTarget() != null) {
+			distRow = r.getTarget().getRow() - r.getRow();
+			distCol = r.getTarget().getCol() - r.getCol();
+		}
+		if (Math.abs(distRow) > Math.abs(distCol)) {
+			mov = distRow > 0 ? 1 : -1;
+			bestPos = new Position(r.getRow() - mov, r.getCol());
+		}
+		else if (Math.abs(distRow) < Math.abs(distCol)) {
+			mov = distRow > 0 ? 1 : -1;
+			bestPos = new Position(r.getRow(), r.getCol() - mov);
+		}
+		if (bestPos == null || !(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol()))) {
+			do {
+				bestPos = MovUtils.randomPos(r.getPos());
+			} while (!(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol())));
+		}
+		
+		return bestPos;
+	}
 }
