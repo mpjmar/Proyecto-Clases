@@ -77,6 +77,4 @@ public class Game {
         } while (runners > 0 || chasers > 0);
 		Utils.displayWinner(gameElements);
     }
-
-	
 }
