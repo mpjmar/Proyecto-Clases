@@ -52,29 +52,40 @@ public class Game {
 		ArrayList<BoardElement> gameElements = new ArrayList<BoardElement>();
 		int runners = 0;
 		int chasers = 0;
+		int moves = 0;
+		boolean erased;
 		Obstacle.generateObstacles(board, level, gameElements);
-		Runner.generateRunners(board, level, gameElements);
 		Chaser.generateChasers(board, level, gameElements);
+		Runner.generateRunners(board, level, gameElements);
 		
-        do {
+		do {
+			erased = false;
 			Utils.clearConsole();
 			board.clearBoard();
 			for (BoardElement e : gameElements)
 				if (e instanceof Target character)
 					character.setTarget(gameElements);
 			board.placeElements(gameElements);
+			Movements.move(gameElements, board);
+			Fight.searchEnemies(gameElements);
+
 			System.out.println(board);
 			System.out.printf("Runners: %s%d%s  |  Chasers: %s%d%s%n",
 				GREEN, ListUtils.countCharacters(gameElements, "Runner"), RESET, 
 				RED, ListUtils.countCharacters(gameElements, "Chaser"), RESET);
-			Movements.move(gameElements, board);
-			Fight.searchEnemies(gameElements);
 			System.out.println(ListUtils.displayState(gameElements));
-			ListUtils.updateList(gameElements);
+
+			erased = ListUtils.updateList(gameElements);
 			runners = ListUtils.countCharacters(gameElements, "Runner");
 			chasers = ListUtils.countCharacters(gameElements, "Chaser");
-            Thread.sleep(1000);
-        } while (runners > 0 || chasers > 0);
+			
+			if (erased)
+				moves = 0;
+			else
+				moves++;
+			Thread.sleep(100);
+		} while ((runners > 0 && chasers > 0) && moves < 50);
+		
 		Utils.displayWinner(gameElements);
-    }
+	}
 }

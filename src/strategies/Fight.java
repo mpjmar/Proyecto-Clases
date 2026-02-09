@@ -11,7 +11,7 @@ public class Fight {
 
 	public static void searchEnemies(ArrayList<BoardElement> elements) {
 		for (BoardElement e : elements)
-			if (e instanceof Chaser && MovUtils.isNeighbour(e.getPos(), ((Chaser) e).getTarget().getPos()))
+			if (e instanceof Chaser && ((Chaser) e).getTarget() != null && MovUtils.isNeighbour(e.getPos(), ((Chaser) e).getTarget().getPos()))
 				fight((Chaser) e, (Runner) (((Chaser) e).getTarget()));
 	}
 	

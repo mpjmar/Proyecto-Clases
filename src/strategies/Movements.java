@@ -14,5 +14,4 @@ public class Movements {
 				ChaserStrategy.moveChaser(gameElements, board, (Chaser) e);
 		}
 	}
-
 }

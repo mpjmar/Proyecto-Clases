@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import board.Board;
 import boardElements.BoardElement;
-import boardElements.Chaser;
 import boardElements.Runner;
 import utils.MovUtils;
 import utils.Position;
@@ -46,9 +45,10 @@ public class RunnerStrategy {
 		return bestPos;
 	} */
 
-		private static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Runner r) {
+	private static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Runner r) {
 		Position bestPos = null;
-		int mov = 0;
+		Position rowMov = null;
+		Position colMov = null;
 		int distRow = 0;
 		int distCol = 0;
 
@@ -56,20 +56,41 @@ public class RunnerStrategy {
 			distRow = r.getTarget().getRow() - r.getRow();
 			distCol = r.getTarget().getCol() - r.getCol();
 		}
+
+		rowMov = moveRow(r, distRow);
+		colMov = moveCol(r, distCol);
+
 		if (Math.abs(distRow) > Math.abs(distCol)) {
-			mov = distRow > 0 ? 1 : -1;
-			bestPos = new Position(r.getRow() - mov, r.getCol());
+			if (isValid(gameElements, board, rowMov))
+				bestPos = rowMov;
+			else if (isValid(gameElements, board, colMov))
+				bestPos = colMov;
 		}
-		else if (Math.abs(distRow) < Math.abs(distCol)) {
-			mov = distRow > 0 ? 1 : -1;
-			bestPos = new Position(r.getRow(), r.getCol() - mov);
+		else if (Math.abs(distCol) > Math.abs(distRow)) {
+			if (isValid(gameElements, board, colMov))
+				bestPos = colMov;
+			else if (isValid(gameElements, board, rowMov))
+				bestPos = rowMov;
 		}
-		if (bestPos == null || !(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol()))) {
+		if (bestPos == null) {
 			do {
 				bestPos = MovUtils.randomPos(r.getPos());
-			} while (!(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol())));
+			} while (bestPos == null || !isValid(gameElements, board, bestPos));
 		}
-		
 		return bestPos;
+	}
+
+	private static Position moveRow(Runner r, int distRow) {
+		int mov = distRow > 0 ? -1 : 1;
+		return new Position(r.getRow() + mov, r.getCol());
+	}
+
+	private static Position moveCol(Runner r, int distCol) {
+		int mov = distCol > 0 ? -1 : 1;
+		return new Position(r.getRow(), r.getCol() + mov);
+	}
+
+	private static boolean isValid(ArrayList<BoardElement> gameElements, Board board, Position pos) {
+		return MovUtils.isWithinLimits(board, pos) && MovUtils.isEmpty(gameElements, pos.getRow(), pos.getCol());
 	}
 }

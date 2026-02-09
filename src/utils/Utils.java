@@ -78,16 +78,21 @@ public class Utils {
 		final String CYAN_BOLD_BRIGHT = "\033[1;96m";
 		final String PURPLE_BRIGHT = "\033[0;95m";
 		final String RESET = "\033[0m";
+		int chaser = 0;
+		int runner = 0;
 		String winner = "";
 		
 		for (BoardElement e : elements) {
-			if (e instanceof Chaser || e instanceof Runner)
-				winner = e.getClass().getSimpleName().toUpperCase();
+			if (e instanceof Chaser)
+				chaser++;
+			else if (e instanceof Runner)
+				runner++;
 		}
+		winner = chaser > runner ? "CHASERS WIN!!" : runner > chaser ? "RUNNERS WIN!!" : "IT'S A TIE!!!";
 		System.out.printf("""
-				%s============================
-				==     %s%sS WIN!!!     %s==
-				============================%s
+				%s==========================
+				==     %s%s    %s==
+				==========================%s
 				""", PURPLE_BRIGHT, CYAN_BOLD_BRIGHT, winner, PURPLE_BRIGHT, RESET);
 	}
 }
