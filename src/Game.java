@@ -83,7 +83,7 @@ public class Game {
 				moves = 0;
 			else
 				moves++;
-			Thread.sleep(100);
+			Thread.sleep(500);
 		} while ((runners > 0 && chasers > 0) && moves < 50);
 		
 		Utils.displayWinner(gameElements);

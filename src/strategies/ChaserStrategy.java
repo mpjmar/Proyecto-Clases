@@ -18,7 +18,7 @@ public class ChaserStrategy {
 		c.setPos(c.getRow(), c.getCol());
 	}
     
-	/* public static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Chaser c) {
+	public static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Chaser c) {
 		Position[] avalPos = {
 			new Position(c.getRow(), c.getCol() + 1),
 			new Position(c.getRow() + 1, c.getCol()),
@@ -29,7 +29,7 @@ public class ChaserStrategy {
 		int minDist = Integer.MAX_VALUE;
 		Position bestPos = null;
 		for (Position p : avalPos) {
-			if (c.getTarget() != null && MovUtils.isWithinLimits(board, p) && MovUtils.isEmpty(gameElements, p.getRow(), p.getCol())) {
+			if (c.getTarget() != null && isValid(gameElements, board, p)) {
 				int dist = Position.calcDistance(c.getTarget().getPos(), p);
 				if (dist < minDist) {
 					minDist = dist;
@@ -43,9 +43,9 @@ public class ChaserStrategy {
 			} while (!(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol())));
 		}
 		return bestPos;
-	} */
+	}
 
-	private static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Chaser c) {
+	/* private static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Chaser c) {
 		Position bestPos = null;
 		Position rowMov = null;
 		Position colMov = null;
@@ -78,7 +78,7 @@ public class ChaserStrategy {
 			} while (bestPos == null || !isValid(gameElements, board, bestPos));
 		}
 		return bestPos;
-	}
+	} */
 
 	private static Position moveRow(Chaser c, int distRow) {
 		int mov = distRow > 0 ? 1 : -1;
