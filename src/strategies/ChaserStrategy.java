@@ -1,11 +1,9 @@
 package strategies;
 
-import java.util.ArrayList;
-
 import board.Board;
 import boardElements.BoardElement;
 import boardElements.Chaser;
-import boardElements.Runner;
+import java.util.ArrayList;
 import utils.MovUtils;
 import utils.Position;
 
@@ -21,8 +19,8 @@ public class ChaserStrategy {
 	public static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Chaser c) {
 		Position[] avalPos = {
 			new Position(c.getRow(), c.getCol() + 1),
-			new Position(c.getRow() + 1, c.getCol()),
 			new Position(c.getRow(), c.getCol() - 1),
+			new Position(c.getRow() + 1, c.getCol()),
 			new Position(c.getRow() - 1, c.getCol()),
 		};
 		
@@ -40,7 +38,7 @@ public class ChaserStrategy {
 		if (bestPos == null) {
 			do {
 				bestPos = MovUtils.randomPos(c.getPos());
-			} while (!(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol())));
+			} while (!(isValid(gameElements, board, bestPos)));
 		}
 		return bestPos;
 	}

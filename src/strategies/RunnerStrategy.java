@@ -1,10 +1,9 @@
 package strategies;
 
-import java.util.ArrayList;
-
 import board.Board;
 import boardElements.BoardElement;
 import boardElements.Runner;
+import java.util.ArrayList;
 import utils.MovUtils;
 import utils.Position;
 
@@ -40,7 +39,7 @@ public class RunnerStrategy {
 		if (bestPos == null) {
 			do {
 				bestPos = MovUtils.randomPos(r.getPos());
-			} while (!(MovUtils.isWithinLimits(board, bestPos) && MovUtils.isEmpty(gameElements, bestPos.getRow(), bestPos.getCol())));
+			} while (!(isValid(gameElements, board, bestPos)));
 		}
 		return bestPos;
 	}
