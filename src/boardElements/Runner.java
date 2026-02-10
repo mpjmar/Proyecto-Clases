@@ -47,7 +47,7 @@ public class Runner extends Role implements Target {
 		int totalCells = board.getRows() * board.getCols();
 
 		int maxElements = level == 1 ? totalCells / 20 : level == 2 ? totalCells / 15 : totalCells / 10;
-		int elements = Utils.generateRandom(maxElements / 2, maxElements);
+		int elements = 1;//Utils.generateRandom(maxElements / 2, maxElements);
 		
 		for (int i = 0; i < elements; i++) {
 			do {

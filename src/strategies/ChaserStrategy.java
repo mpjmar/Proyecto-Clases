@@ -8,14 +8,12 @@ import utils.MovUtils;
 import utils.Position;
 
 public class ChaserStrategy {
- 
-	public static void moveChaser(ArrayList<BoardElement> gameElements, Board board, Chaser c) {
+
+	public static void chooseNextPos(ArrayList<BoardElement> gameElements, Board board, Chaser c) {
 		Position bestPos = calcBestPos(gameElements, board, c);
-		c.setRow(bestPos.getRow());
-		c.setCol(bestPos.getCol());
-		c.setPos(c.getRow(), c.getCol());
+		c.setNextPos(bestPos.getRow(), bestPos.getCol());
 	}
-    
+
 	public static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Chaser c) {
 		Position[] avalPos = {
 			new Position(c.getRow(), c.getCol() + 1),
@@ -89,6 +87,6 @@ public class ChaserStrategy {
 	}
 
 	private static boolean isValid(ArrayList<BoardElement> gameElements, Board board, Position pos) {
-		return MovUtils.isWithinLimits(board, pos) && MovUtils.isEmpty(gameElements, pos.getRow(), pos.getCol());
+		return MovUtils.isWithinLimits(board, pos) && !MovUtils.isObstacle(gameElements, pos.getRow(), pos.getCol());
 	}
 }

@@ -10,13 +10,11 @@ import utils.Position;
 
 public class RunnerStrategy {
 
-	public static void moveRunner(ArrayList<BoardElement> gameElements, Board board, Runner r) {
+	public static void chooseNextPos(ArrayList<BoardElement> gameElements, Board board, Runner r) {
 		Position bestPos = calcBestPos(gameElements, board, r);
-		r.setRow(bestPos.getRow());
-		r.setCol(bestPos.getCol());
-		r.setPos(r.getRow(), r.getCol());
+		r.setNextPos(bestPos.getRow(), bestPos.getCol());
 	}
-    
+
 	public static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Runner r) {
 		Position[] avalPos = {
 			new Position(r.getRow(), r.getCol() + 1),
@@ -28,7 +26,7 @@ public class RunnerStrategy {
 		int maxDist = 0;
 		Position bestPos = null;
 		for (Position p : avalPos) {
-			if (r.getTarget() != null && isValid(gameElements, board, p) && MovUtils.isSafe(gameElements, p)) {
+			if (r.getTarget() != null && isValid(gameElements, board, p)) {
 				int dist = Position.calcDistance(r.getTarget().getPos(), p);
 				if (dist > maxDist) {
 					maxDist = dist;

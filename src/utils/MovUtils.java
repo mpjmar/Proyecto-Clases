@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import board.Board;
 import boardElements.BoardElement;
 import boardElements.Chaser;
+import boardElements.Obstacle;
 
 public class MovUtils {
 
@@ -13,6 +14,13 @@ public class MovUtils {
 			if (e.getRow() == row && e.getCol() == col)
 				return false;
 		return true;
+	}
+
+	public static boolean isObstacle(ArrayList<BoardElement> gameElements, int row, int col) {
+		for (BoardElement e : gameElements)
+			if (e instanceof Obstacle && e.getRow() == row && e.getCol() == col)
+				return true;
+		return false;
 	}
 
 	public static boolean isWithinLimits(Board board, Position pos) {

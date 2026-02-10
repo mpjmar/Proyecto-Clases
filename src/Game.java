@@ -64,7 +64,7 @@ public class Game {
 				if (e instanceof Target character)
 					character.setTarget(gameElements);
 			board.placeElements(gameElements);
-			Movements.move(gameElements, board);
+			Movements.move(gameElements);
 			Fight.searchEnemies(gameElements);
 
 			System.out.println(board);
@@ -81,7 +81,7 @@ public class Game {
 				moves = 0;
 			else
 				moves++;
-			Thread.sleep(500);
+			Thread.sleep(1000);
 		} while ((runners > 0 && chasers > 0) && moves < 50);
 		
 		Utils.displayWinner(gameElements);
