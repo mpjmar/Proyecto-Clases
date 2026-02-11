@@ -10,11 +10,6 @@ import utils.Position;
 
 public class RunnerStrategy {
 
-	public static void chooseNextPos(ArrayList<BoardElement> gameElements, Board board, Runner r) {
-		Position bestPos = calcBestPos(gameElements, board, r);
-		r.setNextPos(bestPos.getRow(), bestPos.getCol());
-	}
-
 	public static Position calcBestPos(ArrayList<BoardElement> gameElements, Board board, Runner r) {
 		Position[] avalPos = {
 			new Position(r.getRow(), r.getCol() + 1),

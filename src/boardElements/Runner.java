@@ -27,7 +27,7 @@ public class Runner extends Role implements Target {
 
 	@Override
 	public void setTarget(ArrayList<BoardElement> gameElements) {
-		int minDist = Integer.MAX_VALUE;
+		int minDist = 5;//Integer.MAX_VALUE;
 		Target target = null;
 		for (BoardElement e : gameElements) {
 			if (e instanceof Chaser) {

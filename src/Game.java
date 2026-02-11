@@ -64,6 +64,7 @@ public class Game {
 				if (e instanceof Target character)
 					character.setTarget(gameElements);
 			board.placeElements(gameElements);
+			Movements.chooseNextPos(gameElements, board);
 			Movements.move(gameElements);
 			Fight.searchEnemies(gameElements);
 
