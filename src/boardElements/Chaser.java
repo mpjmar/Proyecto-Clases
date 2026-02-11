@@ -25,7 +25,6 @@ public class Chaser extends Role implements Target {
 		return this.target;
 	}
 
-	@Override
 	public void setTarget(ArrayList<BoardElement> gameElements) {
 		int minDist = Integer.MAX_VALUE;
 		Target target = null;
@@ -47,7 +46,7 @@ public class Chaser extends Role implements Target {
 		int totalCells = board.getRows() * board.getCols();
 
 		int maxElements = level == 1 ? totalCells / 20 : level == 2 ? totalCells / 15 : totalCells / 10;
-		int elements = 1;//Utils.generateRandom(maxElements / 2, maxElements);
+		int elements = 2;//Utils.generateRandom(maxElements / 2, maxElements);
 		
 		for (int i = 0; i < elements; i++) {
 			do {

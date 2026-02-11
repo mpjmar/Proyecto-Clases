@@ -1,31 +1,18 @@
 package strategies;
 
 import java.util.ArrayList;
-
 import board.Board;
 import boardElements.*;
-import utils.MovUtils;
 import utils.Position;
 
 public class Movements {
 
-	public static void move(ArrayList<BoardElement> gameElements) {
+	public static void move(ArrayList<BoardElement> gameElements, Board board) {
 		for (BoardElement e : gameElements) {
-
-			if (e instanceof Role r) {
-				System.out.printf("""
-						Posicion actual: (%d, %d)
-						Posicion siguiente: (%d, %d)
-						""",
-					r.getRow(), r.getCol(), r.getNextPos().getRow(), r.getNextPos().getCol());
-			}
-
-			if (e instanceof Role r && MovUtils.isEmpty(gameElements, r.getNextPos().getRow(), r.getNextPos().getCol()))
-				r.setPos(r.getNextPos().getRow(), r.getNextPos().getCol());
-			/* else {
-				// try another pos;
-			} */
-
+			if (e instanceof Runner r )
+				r.setPos(RunnerStrategy.calcBestPos(gameElements, board, r));
+			else if (e instanceof Chaser c)
+				c.setPos(ChaserStrategy.calcBestPos(gameElements, board, c));
 		}
 	}
 

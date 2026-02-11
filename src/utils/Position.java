@@ -1,6 +1,6 @@
 package utils;
 
-public class Position implements Comparable<Position> {
+public class Position {
 	
 	private int row;
 	private int col;
@@ -39,7 +39,7 @@ public class Position implements Comparable<Position> {
 	}
 
 	public void setDist(Position pos) {
-		this.dist = Math.abs(this.getRow() - pos.getRow()) + Math.abs(this.getCol() - pos.getCol());
+		this.dist = calcDistance(this, pos);
 	}
 
 	@Override
@@ -47,24 +47,8 @@ public class Position implements Comparable<Position> {
 		return "Position: row " + this.row + "| col " + this.col + "\n";
 	}
 
-	@Override
-	public int compareTo(Position pos) {
-		int compareDist = Integer.compare(this.dist, pos.dist);
-		if (compareDist != 0)
-			return compareDist;
-
-		int distRow = Math.abs(this.row - pos.row);
-		int distCol = Math.abs(this.col - pos.col);
-		if (distRow > distCol)
-			return Integer.compare(this.row, pos.row);
-		else if (distRow < distCol)
-			return Integer.compare(this.col, pos.col);
-		return 0;
-	}
-
-	/* // Manhattan distance
 	public static int calcDistance(Position p1, Position p2) {
 		return Math.abs(p1.getRow() - p2.getRow()) + Math.abs(p1.getCol() - p2.getCol());
-	} */
+	}
 
 }

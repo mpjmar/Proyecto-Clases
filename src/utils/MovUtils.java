@@ -41,6 +41,19 @@ public class MovUtils {
 		return false;
 	}
 
+	public static boolean isValid(ArrayList<BoardElement> gameElements, Board board, Position pos) {
+		return isWithinLimits(board, pos) && !isObstacle(gameElements, pos.getRow(), pos.getCol());
+	}
+
+	public static ArrayList<Position> generatePos(int row, int col) {
+		ArrayList<Position> positions = new ArrayList<Position>();
+		positions.add(new Position(row, col + 1));
+		positions.add(new Position(row, col - 1));
+		positions.add(new Position(row + 1, col));
+		positions.add(new Position(row - 1, col));
+		return positions;
+	}
+
 	public static Position randomPos(Position pos) {
 		int option = (int)(Math.random() * 4) + 1;
 

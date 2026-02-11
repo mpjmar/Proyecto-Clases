@@ -60,12 +60,15 @@ public class Game {
 			erased = false;
 			Utils.clearConsole();
 			board.clearBoard();
-			for (BoardElement e : gameElements)
-				if (e instanceof Target character)
-					character.setTarget(gameElements);
+			for (BoardElement e : gameElements) {
+				if (e instanceof Role)
+					((Chaser) e).setTarget(gameElements);
+				if (e instanceof Runner)
+					((Runner) e).setTarget(gameElements);
+			}
 			board.placeElements(gameElements);
 			Movements.chooseNextPos(gameElements, board);
-			Movements.move(gameElements);
+			Movements.move(gameElements, board);
 			Fight.searchEnemies(gameElements);
 
 			System.out.println(board);

@@ -22,7 +22,7 @@ public class Fight {
 			int cActualLife = c.getLife() - rLife;
 			int rActualLife = r.getLife() - cLife;
 			c.setLife(cActualLife > 0 ? cActualLife : 0);
-			r.setLife(rActualLife > 0 ? cActualLife : 0);
+			r.setLife(rActualLife > 0 ? rActualLife : 0);
 		}
 	}
 }
