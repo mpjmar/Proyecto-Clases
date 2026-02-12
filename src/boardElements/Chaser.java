@@ -1,8 +1,7 @@
 package boardElements;
 
-import java.util.ArrayList;
-
 import board.Board;
+import java.util.ArrayList;
 import utils.ListUtils;
 import utils.Position;
 import utils.Utils;
@@ -46,7 +45,7 @@ public class Chaser extends Role implements Target {
 		int totalCells = board.getRows() * board.getCols();
 
 		int maxElements = level == 1 ? totalCells / 20 : level == 2 ? totalCells / 15 : totalCells / 10;
-		int elements = 2;//Utils.generateRandom(maxElements / 2, maxElements);
+		int elements = Utils.generateRandom(maxElements / 2, maxElements);
 		
 		for (int i = 0; i < elements; i++) {
 			do {

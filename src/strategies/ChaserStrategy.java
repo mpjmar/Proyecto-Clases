@@ -52,13 +52,7 @@ public class ChaserStrategy {
 				bestPos = MovUtils.randomPos(c.getPos());
 			} while (!(MovUtils.isValid(gameElements, board, bestPos)));
 		}
-
-		// para debuggear!!
-		System.out.println("Chaser en " + c.getPos() + " target " + c.getTarget().getPos());
-		for (Position p : availPos) {
-			System.out.println("  cand " + p + " dist=" + p.getDist());
-		}
-		System.out.println("Elegida: " + bestPos);
+		
 		return bestPos;	
 	}
 }

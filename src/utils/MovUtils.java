@@ -36,9 +36,7 @@ public class MovUtils {
 	}
 
 	public static boolean isNeighbour(Position p1, Position p2) {
-		if ((Math.abs(p1.getRow() - p2.getRow()) + (Math.abs(p1.getCol() - p2.getCol())) == 1))
-			return true;
-		return false;
+		return (Math.abs(p1.getRow() - p2.getRow()) + (Math.abs(p1.getCol() - p2.getCol())) == 1);
 	}
 
 	public static boolean isValid(ArrayList<BoardElement> gameElements, Board board, Position pos) {

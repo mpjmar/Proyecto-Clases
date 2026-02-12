@@ -1,11 +1,10 @@
-import java.util.ArrayList;
-
 import board.Board;
 import boardElements.*;
-import utils.*;
 import input.*;
+import java.util.ArrayList;
 import strategies.Fight;
 import strategies.Movements;
+import utils.*;
 
 
 public class Game {
@@ -61,10 +60,10 @@ public class Game {
 			Utils.clearConsole();
 			board.clearBoard();
 			for (BoardElement e : gameElements) {
-				if (e instanceof Role)
-					((Chaser) e).setTarget(gameElements);
-				if (e instanceof Runner)
-					((Runner) e).setTarget(gameElements);
+				if (e instanceof Chaser chaser)
+					chaser.setTarget(gameElements);
+				if (e instanceof Runner runner)
+					runner.setTarget(gameElements);
 			}
 			board.placeElements(gameElements);
 			Movements.chooseNextPos(gameElements, board);
