@@ -1,23 +1,17 @@
 package boardElements;
 
-import board.Board;
 import java.util.ArrayList;
-import utils.ListUtils;
 import utils.Position;
-import utils.Utils;
 
 public class Runner extends Role implements Target {
 
 	private Target target;
-
-	public Runner() {
-		super(0, 0);
-		this.target = null;
-	}
+	private Position prevPos;
 
 	public Runner(int row, int col) {
 		super(row, col);
 		this.target = null;
+		this.prevPos = new Position(row, col);
 	}
 
 	public Target getTarget() {
@@ -40,21 +34,19 @@ public class Runner extends Role implements Target {
 		this.target = target;
 	}
 
-	public static void generateRunners(Board board, int level, ArrayList<BoardElement> gameElements) {
-		int row;
-		int col;
-		int totalCells = board.getRows() * board.getCols();
+	public Position getPrevPos() {
+		return prevPos;
+	}
 
-		int maxElements = level == 1 ? totalCells / 20 : level == 2 ? totalCells / 15 : totalCells / 10;
-		int elements = Utils.generateRandom(maxElements / 2, maxElements);
-		
-		for (int i = 0; i < elements; i++) {
-			do {
-				row = Utils.generateRandom(0, board.getRows());
-				col = Utils.generateRandom(0, board.getCols());
-			} while (!ListUtils.isEmpty(gameElements, row, col));
-			Runner runner = new Runner(row, col);
-			gameElements.add(runner);
-		}
+	@Override
+	public void setPos(int row, int col) {
+		this.prevPos = new Position(getRow(), getCol());
+		super.setPos(row, col);
+	}
+
+	@Override
+	public void setPos(Position pos) {
+		this.prevPos = new Position(getRow(), getCol());
+		super.setPos(pos);
 	}
 }

@@ -21,12 +21,19 @@ public class RunnerStrategy {
 				if (MovUtils.isWithinLimits(board, p) && !MovUtils.isObstacle(gameElements, p.getRow(), p.getCol()))
 					p.setDist(r.getTarget().getPos());
 			}
+			availPos.removeIf(p -> !MovUtils.isWithinLimits(board, p) || MovUtils.isObstacle(gameElements, p.getRow(), p.getCol()));
 			
-			availPos.removeIf(p -> (!MovUtils.isWithinLimits(board, p) || MovUtils.isObstacle(gameElements, p.getRow(), p.getCol())));
 			Collections.sort(availPos, (p1, p2) -> {
 				int compareDist = Integer.compare(p2.getDist(), p1.getDist());
 				if (compareDist != 0)
 					return compareDist;
+
+				Position prev = r.getPrevPos();
+				boolean p1IsPrev = prev != null && p1.getRow() == prev.getRow() && p1.getCol() == prev.getCol();
+				boolean p2IsPrev = prev != null && p2.getRow() == prev.getRow() && p2.getCol() == prev.getCol();
+
+				if (p1IsPrev && !p2IsPrev) return 1;
+				if (!p1IsPrev && p2IsPrev) return -1;
 			
 				int distRowNow = Math.abs(r.getRow() - r.getTarget().getPos().getRow());
 				int distColNow = Math.abs(r.getCol() - r.getTarget().getPos().getCol());
@@ -47,6 +54,8 @@ public class RunnerStrategy {
 					break;
 				}
 			}
+			if (bestPos == null)
+				bestPos = r.getPos();
 		}
 		else {
 			do {

@@ -1,5 +1,6 @@
 import board.Board;
 import boardElements.*;
+import factory.ElementsFactory;
 import input.*;
 import java.util.ArrayList;
 import strategies.Fight;
@@ -51,34 +52,40 @@ public class Game {
 		int chasers = 0;
 		int moves = 0;
 		boolean erased;
-		Obstacle.generateObstacles(board, level, gameElements);
-		Chaser.generateChasers(board, level, gameElements);
-		Runner.generateRunners(board, level, gameElements);
+		ElementsFactory.generateObstacles(board, level, gameElements);
+		ElementsFactory.generateChasers(board, level, gameElements);
+		ElementsFactory.generateRunners(board, level, gameElements);
+		ElementsFactory.generateHealers(board, level, gameElements);
+		ElementsFactory.generateSpeed(board, level, gameElements);
 		
 		do {
 			erased = false;
 			Utils.clearConsole();
 			board.clearBoard();
+
 			for (BoardElement e : gameElements) {
 				if (e instanceof Chaser chaser)
 					chaser.setTarget(gameElements);
 				if (e instanceof Runner runner)
 					runner.setTarget(gameElements);
 			}
-			board.placeElements(gameElements);
-			Movements.chooseNextPos(gameElements, board);
+			
 			Movements.move(gameElements, board);
 			Fight.searchEnemies(gameElements);
+			Heal.applyHeal(gameElements);
+			Speed.applySpeed(gameElements);
 
+			erased = gameElements.removeIf(e -> e instanceof Role r && r.getLife() <= 0);
+			gameElements.removeIf(e -> e instanceof Healer l && l.getLife() <= 0);
+			runners = ListUtils.countCharacters(gameElements, "Runner");
+			chasers = ListUtils.countCharacters(gameElements, "Chaser");
+
+			board.placeElements(gameElements);
 			System.out.println(board);
 			System.out.printf("Runners: %s%d%s  |  Chasers: %s%d%s%n",
 				GREEN, ListUtils.countCharacters(gameElements, "Runner"), RESET, 
 				RED, ListUtils.countCharacters(gameElements, "Chaser"), RESET);
 			System.out.println(ListUtils.displayState(gameElements));
-
-			erased = ListUtils.updateList(gameElements);
-			runners = ListUtils.countCharacters(gameElements, "Runner");
-			chasers = ListUtils.countCharacters(gameElements, "Chaser");
 			
 			if (erased)
 				moves = 0;
@@ -87,6 +94,11 @@ public class Game {
 			Thread.sleep(1000);
 		} while ((runners > 0 && chasers > 0) && moves < 50);
 		
+		board.placeElements(gameElements);
+		System.out.println(board);
+		System.out.printf("Runners: %s%d%s  |  Chasers: %s%d%s%n",
+				GREEN, ListUtils.countCharacters(gameElements, "Runner"), RESET, 
+				RED, ListUtils.countCharacters(gameElements, "Chaser"), RESET);
 		Utils.displayWinner(gameElements);
 	}
 }

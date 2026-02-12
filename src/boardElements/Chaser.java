@@ -9,15 +9,17 @@ import utils.Utils;
 public class Chaser extends Role implements Target {
 
 	private Target target;
+	Position prevPos;
     
-	public Chaser() {
+	/* public Chaser() {
 		super(0, 0);
 		this.target = null;
-	}
+	} */
 
 	public Chaser(int row, int col) {
 		super(row, col);
 		this.target = null;
+		this.prevPos = new Position(row, col);
 	}
 
 	public Target getTarget() {
@@ -39,21 +41,19 @@ public class Chaser extends Role implements Target {
 		this.target = target;
 	}
 
-	public static void generateChasers(Board board, int level, ArrayList<BoardElement> gameElements) {
-		int row;
-		int col;
-		int totalCells = board.getRows() * board.getCols();
+	public Position getPrevPos() {
+		return prevPos;
+	}
 
-		int maxElements = level == 1 ? totalCells / 20 : level == 2 ? totalCells / 15 : totalCells / 10;
-		int elements = Utils.generateRandom(maxElements / 2, maxElements);
-		
-		for (int i = 0; i < elements; i++) {
-			do {
-				row = Utils.generateRandom(0, board.getRows());
-				col = Utils.generateRandom(0, board.getCols());
-			} while (!ListUtils.isEmpty(gameElements, row, col));
-			Chaser chaser = new Chaser(row, col);
-			gameElements.add(chaser);
-		}
+	@Override
+	public void setPos(int row, int col) {
+		this.prevPos = new Position(getRow(), getCol());
+		super.setPos(row, col);
+	}
+
+	@Override
+	public void setPos(Position pos) {
+		this.prevPos = new Position(getRow(), getCol());
+		super.setPos(pos);
 	}
 }

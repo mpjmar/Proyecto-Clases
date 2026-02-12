@@ -20,12 +20,19 @@ public class ChaserStrategy {
 				if (MovUtils.isWithinLimits(board, p) && !MovUtils.isObstacle(gameElements, p.getRow(), p.getCol()))
 					p.setDist(c.getTarget().getPos());
 			}
-
 			availPos.removeIf(p -> !MovUtils.isWithinLimits(board, p) || MovUtils.isObstacle(gameElements, p.getRow(), p.getCol()));
+
 			Collections.sort(availPos, (p1, p2) -> {
 				int compareDist = Integer.compare(p1.getDist(), p2.getDist());
 				if (compareDist != 0)
 					return compareDist;
+
+				Position prev = c.getPrevPos();
+				boolean p1IsPrev = prev != null && p1.getRow() == prev.getRow() && p1.getCol() == prev.getCol();
+				boolean p2IsPrev = prev != null && p2.getRow() == prev.getRow() && p2.getCol() == prev.getCol();
+
+				if (p1IsPrev && !p2IsPrev) return 1;
+				if (!p1IsPrev && p2IsPrev) return -1;
 			
 				int distRowNow = Math.abs(c.getRow() - c.getTarget().getPos().getRow());
 				int distColNow = Math.abs(c.getCol() - c.getTarget().getPos().getCol());
@@ -46,6 +53,8 @@ public class ChaserStrategy {
 					break;
 				}
 			}
+			if (bestPos == null)
+				bestPos = c.getPos();
 		}
 		else {
 			do {

@@ -93,7 +93,8 @@ public class Board {
 				case "Obstacle" -> 1;
 				case "Runner" -> 2;
 				case "Chaser" -> 3;
-				case "Life" -> 4;
+				case "Healer" -> 4;
+				case "Speed" -> 5;
 				default -> 0;
 			};
 			setCell(e.getPos(), value);

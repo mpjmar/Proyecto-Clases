@@ -55,6 +55,7 @@ public class Utils {
 		final String GREEN = "\033[0;32m";
 		final String RED = "\033[0;31m";
 		final String BLUE = "\033[0;34m";
+		final String CYAN = "\033[0;36m";
 		final String RESET = "\033[0m";
 
 		String symbol = switch(value) {
@@ -63,6 +64,7 @@ public class Utils {
 			case 2 -> GREEN + "● " + RESET;
 			case 3 -> RED + "▲ " + RESET;
 			case 4 -> BLUE + "★ " + RESET;
+			case 5 -> CYAN + "⚡ " + RESET;
 			default -> "";
 		};
 		return symbol;

@@ -24,10 +24,6 @@ public class ListUtils {
 		return counter;
 	}
 
-	public static boolean updateList(ArrayList<BoardElement> gameElements) {
-		return gameElements.removeIf(e -> e instanceof Role && ((Role) e).getLife() == 0);
-	}
-
 	public static String displayState(ArrayList<BoardElement> gameElements) {
 		String state = "";
 		for (BoardElement e : gameElements)
