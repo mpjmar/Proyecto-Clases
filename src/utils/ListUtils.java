@@ -18,9 +18,16 @@ public class ListUtils {
 
 	public static int countCharacters(ArrayList<BoardElement> gameElements, String character) {
 		int counter = 0;
-		for (BoardElement e : gameElements)
-			if (e.getClass().getSimpleName().equals(character))
-				counter++;
+		for (BoardElement e : gameElements) {
+			switch (character) {
+				case "Chaser" -> {
+					if (e instanceof Chaser) counter++;
+				}
+				case "Runner" -> {
+					if (e instanceof Runner) counter++;
+				}
+			}
+		}
 		return counter;
 	}
 

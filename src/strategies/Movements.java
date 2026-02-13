@@ -14,12 +14,12 @@ public class Movements {
 				r.setPos(bestPos.getRow(), bestPos.getCol());
 			}
 			else if (e instanceof Chaser c) {
-				int steps = c.getSpeed();
+				int steps = c.getSpeedTurns() > 0 ? 2 : 1;
 
 				for (int i = 0; i < steps; i++) {
 					Position bestPos = ChaserStrategy.calcBestPos(gameElements, board, c);
 					c.setPos(bestPos.getRow(), bestPos.getCol());
-					c.decrementSpeedTurn(1);
+					c.decrementSpeedTurn();
 				}
 			}
 		}

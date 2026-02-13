@@ -1,18 +1,13 @@
-package factory;
+package generator;
 
 import java.util.ArrayList;
 
 import board.Board;
-import boardElements.BoardElement;
-import boardElements.Chaser;
-import boardElements.Healer;
-import boardElements.Obstacle;
-import boardElements.Runner;
-import boardElements.Speeder;
+import boardElements.*;
 import utils.ListUtils;
 import utils.Utils;
 
-public class ElementsFactory {
+public class ElementsGenerator {
 	
 		public static void generateObstacles(Board board, int level, ArrayList<BoardElement> gameElements) {
 		int row;
@@ -73,7 +68,7 @@ public class ElementsFactory {
 		int col;
 		int totalCells = board.getRows() * board.getCols();
 
-		int maxElements = level == 1 ? totalCells / 50 : level == 2 ? totalCells / 70 : totalCells / 90;
+		int maxElements = level == 1 ? totalCells / 20 : level == 2 ? totalCells / 30 : totalCells / 40;
 		int elements = Utils.generateRandom(maxElements / 2, maxElements);
 		
 		for (int i = 0; i < elements; i++) {
@@ -87,12 +82,12 @@ public class ElementsFactory {
 		}
 	}
 
-	public static void generateSpeed(Board board, int level, ArrayList<BoardElement> gameElements) {
+	public static void generateSpeeders(Board board, int level, ArrayList<BoardElement> gameElements) {
 		int row;
 		int col;
 		int totalCells = board.getRows() * board.getCols();
 
-		int maxElements = level == 1 ? totalCells / 70 : level == 2 ? totalCells / 80 : totalCells / 90;
+		int maxElements = level == 1 ? totalCells / 20 : level == 2 ? totalCells / 30 : totalCells / 40;
 		int elements = Utils.generateRandom(maxElements / 2, maxElements);
 		
 		for (int i = 0; i < elements; i++) {
@@ -103,5 +98,13 @@ public class ElementsFactory {
 			Speeder speeder = new Speeder(row, col);
 			gameElements.add(speeder);
 		}
+	}
+
+	public static void generateElements(Board board, int level, ArrayList<BoardElement> gameElements) {
+		ElementsGenerator.generateObstacles(board, level, gameElements);
+		ElementsGenerator.generateChasers(board, level, gameElements);
+		ElementsGenerator.generateRunners(board, level, gameElements);
+		ElementsGenerator.generateHealers(board, level, gameElements);
+		ElementsGenerator.generateSpeeders(board, level, gameElements);
 	}
 }

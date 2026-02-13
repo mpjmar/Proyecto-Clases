@@ -69,7 +69,7 @@ public class Chaser extends Role implements Target {
 		super.setPos(pos);
 	}
 
-	public void decrementSpeedTurn(int amount) {
+	public void decrementSpeedTurn() {
 		if (speedTurns > 0)
 			speedTurns--;
 	}

@@ -1,12 +1,12 @@
 package strategies;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import board.Board;
 import boardElements.BoardElement;
 import boardElements.Runner;
-import java.util.ArrayList;
-import java.util.Collections;
-import utils.MovUtils;
-import utils.Position;
+import utils.*;
 
 
 public class RunnerStrategy {
@@ -34,18 +34,8 @@ public class RunnerStrategy {
 
 				if (p1IsPrev && !p2IsPrev) return 1;
 				if (!p1IsPrev && p2IsPrev) return -1;
-			
-				int distRowNow = Math.abs(r.getRow() - r.getTarget().getPos().getRow());
-				int distColNow = Math.abs(r.getCol() - r.getTarget().getPos().getCol());
-				int distRow1 = Math.abs(distRowNow - p1.getRow());
-				int distCol1 = Math.abs(distColNow - p1.getCol());
-				int distRow2 = Math.abs(distRowNow - p2.getRow());
-				int distCol2 = Math.abs(distColNow - p2.getCol());
 
-				int max1 = Math.max(distRow1, distCol1);
-				int max2 = Math.max(distRow2, distCol2);
-
-				return Integer.compare(max2, max1);
+				return Utils.generateRandom(-1, 1);
 			});
 
 			for (Position p : availPos) {

@@ -64,6 +64,7 @@ public class Board {
 					case 2 -> Utils.displaySymbol(2);
 					case 3 -> Utils.displaySymbol(3);
 					case 4 -> Utils.displaySymbol(4);
+					case 5 -> Utils.displaySymbol(5);
 					default -> "";
 				};
 			}
@@ -94,7 +95,7 @@ public class Board {
 				case "Runner" -> 2;
 				case "Chaser" -> 3;
 				case "Healer" -> 4;
-				case "Speed" -> 5;
+				case "Speeder" -> 5;
 				default -> 0;
 			};
 			setCell(e.getPos(), value);

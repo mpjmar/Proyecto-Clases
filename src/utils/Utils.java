@@ -46,16 +46,45 @@ public class Utils {
 	public static void gameMechanics() {
 		System.out.println("""
 				
-			========= GAME MECHANICS =========
+			=============================== GAME MECHANICS ===============================
+
+			✹ Board
+				- The game is played on a rectangular grid.
+				- Each cell can be empty or contain one element.
+
+			✹ Characters
+				- Runners (●) try to survive and move away from Chasers.
+				- Chasers (▲) chase and try to kill Runners.
+				- Healers (◆) give extra life to nearby Runners.
+				- Speeders (▶) give temporary speed boost to nearby Chasers.
+				- Obstacles (█) block movement and line of sight.
+
+			✹ Turn sequence
+				1) Each Chaser selects the closest Runner as its target.
+				2) Runners move first, trying to maximize the distance to their target.
+				3) Chasers move next, trying to minimize the distance to their target.
+					- Chasers with a speed bonus move 2 cells per turn.
+				4) If a Chaser is adjacent to its Runner target, they fight:
+					- Both lose life based on the opponent’s life.
+					- Characters with 0 or less life are removed from the board.
+				5) Runners adjacent to a Healer receive extra life and the Healer disappears.
+				6) Chasers adjacent to a Speeder receive a speed bonus for several turns
+				and the Speeder disappears.
+
+			✹ Goal
+				- The game ends when all Runners or all Chasers are dead,
+				or when the maximum number of turns is reached.
+				- The side with more surviving characters wins.
 			
-				""");
+			==================================================================================
+			""");
 	}
 
 	public static String displaySymbol(int value) {
 		final String GREEN = "\033[0;32m";
 		final String RED = "\033[0;31m";
 		final String BLUE = "\033[0;34m";
-		final String CYAN = "\033[0;36m";
+		final String MAGENTA = "\033[1;35m";
 		final String RESET = "\033[0m";
 
 		String symbol = switch(value) {
@@ -63,8 +92,8 @@ public class Utils {
 			case 1 -> "█ ";
 			case 2 -> GREEN + "● " + RESET;
 			case 3 -> RED + "▲ " + RESET;
-			case 4 -> BLUE + "★ " + RESET;
-			case 5 -> CYAN + "⚡ " + RESET;
+			case 4 -> BLUE + "◆ " + RESET;
+			case 5 -> MAGENTA + "▶ " + RESET;
 			default -> "";
 		};
 		return symbol;

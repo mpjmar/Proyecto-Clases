@@ -1,17 +1,13 @@
 import board.Board;
 import boardElements.*;
-import factory.ElementsFactory;
-import gameActions.Fight;
-import gameActions.Heal;
-import gameActions.Speed;
+import gameActions.*;
+import generator.ElementsGenerator;
 import input.*;
+import utils.*;
 import java.util.ArrayList;
 
-import strategies.Movements;
-import utils.*;
 
-
-public class Game {
+public class Play {
 
 	public static final String GREEN = "\033[0;32m";
 	public static final String RED = "\033[0;31m";
@@ -55,11 +51,8 @@ public class Game {
 		int chasers = 0;
 		int moves = 0;
 		boolean erased;
-		ElementsFactory.generateObstacles(board, level, gameElements);
-		ElementsFactory.generateChasers(board, level, gameElements);
-		ElementsFactory.generateRunners(board, level, gameElements);
-		ElementsFactory.generateHealers(board, level, gameElements);
-		ElementsFactory.generateSpeed(board, level, gameElements);
+		
+		ElementsGenerator.generateElements(board, level, gameElements);
 		
 		do {
 			erased = false;
@@ -73,21 +66,17 @@ public class Game {
 					runner.setTarget(gameElements);
 			}
 			
-			Movements.move(gameElements, board);
-			Fight.searchEnemies(gameElements);
-			Heal.healRunners(gameElements);
-			Speed.speedChasers(gameElements);
+			Game.playGame(gameElements, board);
 
 			erased = gameElements.removeIf(e -> e instanceof Role r && r.getLife() <= 0);
-			gameElements.removeIf(e -> e instanceof Healer h && h.getExtraLife() <= 0);
 			runners = ListUtils.countCharacters(gameElements, "Runner");
 			chasers = ListUtils.countCharacters(gameElements, "Chaser");
 
 			board.placeElements(gameElements);
 			System.out.println(board);
 			System.out.printf("Runners: %s%d%s  |  Chasers: %s%d%s%n",
-				GREEN, ListUtils.countCharacters(gameElements, "Runner"), RESET, 
-				RED, ListUtils.countCharacters(gameElements, "Chaser"), RESET);
+				GREEN, runners, RESET, 
+				RED, chasers, RESET);
 			System.out.println(ListUtils.displayState(gameElements));
 			
 			if (erased)
