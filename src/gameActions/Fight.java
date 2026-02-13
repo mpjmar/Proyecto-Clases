@@ -1,4 +1,4 @@
-package strategies;
+package gameActions;
 
 import java.util.ArrayList;
 
@@ -16,13 +16,11 @@ public class Fight {
 	}
 	
 	private static void fight(Chaser c, Runner r) {
-		if (MovUtils.isNeighbour(c.getPos(), r.getPos())) {
 			int cLife = c.getLife();
 			int rLife = r.getLife();
 			int cActualLife = c.getLife() - rLife;
 			int rActualLife = r.getLife() - cLife;
 			c.setLife(cActualLife > 0 ? cActualLife : 0);
 			r.setLife(rActualLife > 0 ? rActualLife : 0);
-		}
 	}
 }

@@ -73,7 +73,7 @@ public class ElementsFactory {
 		int col;
 		int totalCells = board.getRows() * board.getCols();
 
-		int maxElements = level == 1 ? totalCells / 20 : level == 2 ? totalCells / 15 : totalCells / 10;
+		int maxElements = level == 1 ? totalCells / 50 : level == 2 ? totalCells / 70 : totalCells / 90;
 		int elements = Utils.generateRandom(maxElements / 2, maxElements);
 		
 		for (int i = 0; i < elements; i++) {
@@ -82,8 +82,8 @@ public class ElementsFactory {
 				col = Utils.generateRandom(0, board.getCols());
 			} while (!ListUtils.isEmpty(gameElements, row, col));
 			int amount = Utils.generateRandom(10, 50);
-			Healer life = new Healer(row, col, amount);
-			gameElements.add(life);
+			Healer healer = new Healer(row, col, amount);
+			gameElements.add(healer);
 		}
 	}
 
@@ -92,7 +92,7 @@ public class ElementsFactory {
 		int col;
 		int totalCells = board.getRows() * board.getCols();
 
-		int maxElements = level == 1 ? totalCells / 70 : level == 2 ? totalCells / 60 : totalCells / 50;
+		int maxElements = level == 1 ? totalCells / 70 : level == 2 ? totalCells / 80 : totalCells / 90;
 		int elements = Utils.generateRandom(maxElements / 2, maxElements);
 		
 		for (int i = 0; i < elements; i++) {
@@ -100,8 +100,7 @@ public class ElementsFactory {
 				row = Utils.generateRandom(0, board.getRows());
 				col = Utils.generateRandom(0, board.getCols());
 			} while (!ListUtils.isEmpty(gameElements, row, col));
-			int amount = Utils.generateRandom(-1, 1);
-			Speeder speed = new Speeder(row, col, amount);
+			Speeder speeder = new Speeder(row, col);
 			gameElements.add(speeder);
 		}
 	}

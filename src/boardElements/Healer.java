@@ -2,18 +2,18 @@ package boardElements;
 
 public class Healer extends BoardElement {
 	
-	private int life;
+	private int extraLife;
 
 	public Healer(int row, int col, int life) {
 		super(row, col);
-		this.life = life;
+		this.extraLife = life;
 	}
 	
-	public int getLife() {
-		return life;
+	public int getExtraLife() {
+		return extraLife;
 	}
 
-	public void setLife(int life) {
-		this.life = life;
+	public void setExtraLife(int life) {
+		this.extraLife = life;
 	}
 }

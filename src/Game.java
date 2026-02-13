@@ -1,9 +1,12 @@
 import board.Board;
 import boardElements.*;
 import factory.ElementsFactory;
+import gameActions.Fight;
+import gameActions.Heal;
+import gameActions.Speed;
 import input.*;
 import java.util.ArrayList;
-import strategies.Fight;
+
 import strategies.Movements;
 import utils.*;
 
@@ -72,11 +75,11 @@ public class Game {
 			
 			Movements.move(gameElements, board);
 			Fight.searchEnemies(gameElements);
-			Heal.applyHeal(gameElements);
-			Speed.applySpeed(gameElements);
+			Heal.healRunners(gameElements);
+			Speed.speedChasers(gameElements);
 
 			erased = gameElements.removeIf(e -> e instanceof Role r && r.getLife() <= 0);
-			gameElements.removeIf(e -> e instanceof Healer l && l.getLife() <= 0);
+			gameElements.removeIf(e -> e instanceof Healer h && h.getExtraLife() <= 0);
 			runners = ListUtils.countCharacters(gameElements, "Runner");
 			chasers = ListUtils.countCharacters(gameElements, "Chaser");
 

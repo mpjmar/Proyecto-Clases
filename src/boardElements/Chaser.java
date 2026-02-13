@@ -1,25 +1,37 @@
 package boardElements;
 
-import board.Board;
 import java.util.ArrayList;
-import utils.ListUtils;
 import utils.Position;
-import utils.Utils;
 
 public class Chaser extends Role implements Target {
 
+	private int speed;
+	private int speedTurns;
 	private Target target;
 	Position prevPos;
-    
-	/* public Chaser() {
-		super(0, 0);
-		this.target = null;
-	} */
 
 	public Chaser(int row, int col) {
 		super(row, col);
+		this.speed = 1;
+		this.speedTurns = 0;
 		this.target = null;
 		this.prevPos = new Position(row, col);
+	}
+
+	public int getSpeed() {
+		return speed;
+	}
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
+	public int getSpeedTurns() {
+		return speedTurns;
+	}
+
+	public void setSpeedTurns(int speedTurns) {
+		this.speedTurns = speedTurns;
 	}
 
 	public Target getTarget() {
@@ -55,5 +67,10 @@ public class Chaser extends Role implements Target {
 	public void setPos(Position pos) {
 		this.prevPos = new Position(getRow(), getCol());
 		super.setPos(pos);
+	}
+
+	public void decrementSpeedTurn(int amount) {
+		if (speedTurns > 0)
+			speedTurns--;
 	}
 }
