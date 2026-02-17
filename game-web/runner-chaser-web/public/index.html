@@ -3,18 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Runner vs Chaser Game</title>
+    <title>Virus</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div id="game-container">
-        <h1>Catch the Runner</h1>
-        <div id="board"></div>
-        <div id="info">
-            <p id="status"></p>
-            <button id="start-button">Start the fight!</button>
-        </div>
+        <header>
+            <h1>VIRUS</h1>
+            <p class="subtitle">Immune system vs. viral invasion</p>
+        </header>
+
+        <section id="hud">
+            <div class="score">
+                <span class="label">Immune cells:</span>
+                <span id="immune-count" class="value">0</span>
+            </div>
+            <div class="score">
+                <span class="label">Viruses:</span>
+                <span id="virus-count" class="value">0</span>
+            </div>
+        </section>
+
+		<section class="controls">
+			<label id="speed-label">
+				Speed:
+				<input type="range" id="speed-range" min="1" max="5" value="3">
+			</label>
+
+			<label class="count-label">
+				Immune:
+				<input type="number" id="immune-input" min="0" value="50" step="10">
+			</label>
+
+			<label class="count-label">
+				Virus:
+				<input type="number" id="virus-input" min="0" value="50" step="10">
+			</label>
+		</section>
+
+        <main id="board-wrapper">
+            <div id="board"></div>
+        </main>
+
+        <p id="status"></p>
+
+		<section class="controls">
+			<button id="btn-start">Start</button>
+			<button id="btn-pause">Pause</button>
+			<button id="btn-reset">Reset</button>
+		</section>
+
+        <footer>
+            <span>Virus • Simulation prototype</span>
+        </footer>
     </div>
+
     <script src="js/main.js"></script>
 </body>
 </html>

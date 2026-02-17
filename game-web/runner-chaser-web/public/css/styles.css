@@ -1,108 +1,238 @@
+
+:root {
+    --bg-color: #050509;
+    --panel-bg: #0b0f1a;
+    --accent:   #27f3ff;
+    --immune:   #06e806;
+    --virus:    #ee1010;
+    --healer:   #8a7bff;
+    --speeder:  #ff47e0;
+    --grid-cols:  10;
+    --grid-rows:  10;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-	display: flex;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: #e0e8ff;
+    display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
     min-height: 100vh;
 }
 
-h1, h2, h3 {
-    color: #333;
-}
-
-header {
-    background: #35424a;
-    color: #ffffff;
-    padding: 10px 0;
-    text-align: center;
-}
-
-.game-board {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    gap: 5px;
-    margin: 20px 0;
-}
-
+/* Panel principal, centrado y responsive */
 #game-container {
-    max-width: 800px;
-    margin: 20px auto;
+    width: min(90vw, 900px);
+	max-height: 95vh;
+    padding: 1.5rem;
+    background: radial-gradient(circle at top, #151a2b 0, #050509 60%);
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;       /* un poco menos de gap para ganar altura */
+    box-sizing: border-box;
+}
+
+/* Cabecera */
+header {
     text-align: center;
 }
 
-/* el contenedor del tablero */
-#board {
-    display: grid;
-    grid-template-columns: repeat(10, 30px);  /* 10x10 inicial */
-    grid-template-rows: repeat(10, 30px);
-    gap: 0;
-    margin: 20px auto;
-	border: 4px solid darkcyan;
-	background-color: darkcyan;
+header h1 {
+    margin: 0;
+    letter-spacing: 0.2em;
+    font-size: clamp(1.8rem, 4vw, 2.4rem);
+    text-transform: uppercase;
+    color: var(--accent);
 }
 
-/* cada celda del tablero */
+header .subtitle {
+    margin: 0.25rem 0 0;
+    font-size: 0.9rem;
+    color: #9aa4d9;
+}
+
+/* HUD / marcador */
+#hud {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+}
+
+.score {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.95rem;
+}
+
+.score .label {
+    color: #b4bddf;
+}
+
+#immune-count {
+    color: var(--immune);
+    font-weight: 700;
+}
+
+#virus-count {
+    color: var(--virus);
+    font-weight: 700;
+}
+
+/* Controles */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.controls button {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid #303a60;
+    background: #141a2a;
+    color: #e0e8ff;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+}
+
+.controls button:hover {
+    background: #1f2742;
+    box-shadow: 0 0 8px rgba(39, 243, 255, 0.4);
+}
+
+.controls button:active {
+    transform: scale(0.96);
+}
+
+#speed-label,
+.count-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+    color: #b4bddf;
+}
+
+#speed-range,
+.count-label input {
+    accent-color: var(--accent);
+    background: #0b0f1a;
+    border: 1px solid #303a60;
+    border-radius: 999px;
+    padding: 0.1rem 0.4rem;
+    color: #e0e8ff;
+    max-width: 5rem;
+}
+
+/* Contenedor del tablero: mantiene proporción cuadrada y escala */
+#board-wrapper {
+	flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+	align-items: center;
+	min-height: 0;
+	padding: 0.25rem 0;
+    box-sizing: border-box;
+}
+
+#board {
+    width: 100%;
+    height: 100%;
+    width: min(60vmin, 500px);
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: repeat(var(--grid-cols), 1fr);
+    grid-template-rows: repeat(var(--grid-rows), 1fr);
+    background-color: transparent;
+}
+
+/* Celdas sin rejilla visible */
 .cell {
-    width: 30px;
-    height: 30px;
-    background-color: rgb(137, 195, 197);
-    border: 1px solid darkcyan;
-	box-sizing: border-box; 
-	display: flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
-}
-
-.cell.runner {
-    background-image: url("../img/runner.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+    /* sin borde, sin fondo fijo -> “espacio vacío” */
     background-color: transparent;
 }
 
-.cell.chaser {
-    background-image: url("../img/chaser.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
+/* Entidades como “partículas” brillantes */
+.cell.runner, /* Immune cell */
+.cell.immune {
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffffff, var(--immune) 40%, rgba(0,0,0,0) 70%);
+    box-shadow: 0 0 10px rgba(76, 255, 76, 0.8);
+}
+
+.cell.chaser, /* Virus */
+.cell.virus {
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffffff, var(--virus) 40%, rgba(0,0,0,0) 70%);
+    box-shadow: 0 0 10px rgba(255, 51, 51, 0.8);
 }
 
 .cell.healer {
-    background-image: url("../img/healer.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffffff, var(--healer) 40%, rgba(0,0,0,0) 70%);
+    box-shadow: 0 0 8px rgba(138, 123, 255, 0.8);
 }
 
 .cell.speeder {
-    background-image: url("../img/speeder.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #ffffff, var(--speeder) 40%, rgba(0,0,0,0) 70%);
+    box-shadow: 0 0 8px rgba(255, 71, 215, 0.8);
 }
 
+/* “Muros” como zonas opacas */
 .cell.obstacle {
-    background-image: url("../img/obstacle.svg");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    background: #12151f;
 }
 
+/* Status text */
+#status {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #9aa4d9;
+    min-height: 1.2em;
+}
+
+/* Footer */
 footer {
     text-align: center;
-    padding: 10px 0;
-    background: #35424a;
-    color: #ffffff;
-    position: relative;
-    bottom: 0;
-    width: 100%;
+    font-size: 0.75rem;
+    color: #5d668f;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    #game-container {
+        padding: 1rem;
+    }
+
+    #hud {
+        gap: 1rem;
+    }
 }

@@ -1,33 +1,305 @@
-const ROWS = 10;
-const COLS = 10;
 
-function createBoard(rows, cols) {
-    const boardElement = document.getElementById('board');
-    // limpiar por si acaso
-    boardElement.innerHTML = '';
+// Calcula ROWS y COLS según el tamaño de la pantalla y un tamaño mínimo de celda
+function adjustBoardSize() {
+    const minCellSize = 12;
+    const maxCells    = 60;
+    const viewportSize = Math.min(window.innerWidth, window.innerHeight);
+    const available = Math.max(200, viewportSize * 0.75);
 
-    // opcional: si quieres que el grid sea dinámico según filas/columnas:
-    boardElement.style.gridTemplateColumns = `repeat(${cols}, 30px)`;
-    boardElement.style.gridTemplateRows = `repeat(${rows}, 30px)`;
+    let cells = Math.floor(available / minCellSize);
+    cells = Math.max(20, Math.min(cells, maxCells));
 
+    ROWS = cells;
+    COLS = cells;
+
+    boardElement.style.setProperty('--grid-cols', COLS);
+    boardElement.style.setProperty('--grid-rows', ROWS);
+
+    const total = ROWS * COLS;
+    const approxMaxEntities = Math.floor(total * 0.5); // por ejemplo, 50% del tablero
+    immuneInput.max = approxMaxEntities;
+    virusInput.max  = approxMaxEntities;
+}
+
+// Tipos de celda
+const CELL = {
+    EMPTY:   0,
+    OBST:    1,
+    IMMUNE:  2, // antes Runner
+    VIRUS:   3, // antes Chaser
+    HEALER:  4,
+    SPEEDER: 5
+};
+
+let board = [];
+let running = false;
+let loopId = null;       // id del setInterval
+let speedMs = 300;       // milisegundos entre pasos
+
+const immuneCountSpan = document.getElementById('immune-count');
+const virusCountSpan  = document.getElementById('virus-count');
+const statusText      = document.getElementById('status');
+const boardElement    = document.getElementById('board');
+const speedRange      = document.getElementById('speed-range');
+const immuneInput     = document.getElementById('immune-input');
+const virusInput      = document.getElementById('virus-input');
+
+// Crear tablero vacío
+function createEmptyBoard(rows, cols) {
+    const b = [];
     for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-            const cell = document.createElement('div');
-            cell.classList.add('cell');
-            // más adelante: guardar posición, tipo de elemento, etc.
-            cell.dataset.row = r;
-            cell.dataset.col = c;
-            boardElement.appendChild(cell);
+        const row = new Array(cols).fill(CELL.EMPTY);
+        b.push(row);
+    }
+    return b;
+}
+
+function populateBoard(b) {
+    const total = ROWS * COLS;
+
+    // Unos cuantos “muros”
+    for (let i = 0; i < total * 0.1; i++) { // 10% de obstáculos
+        const r = Math.floor(Math.random() * ROWS);
+        const c = Math.floor(Math.random() * COLS);
+        b[r][c] = CELL.OBST;
+    }
+
+    // Leer valores pedidos por el usuario
+    let desiredImmune = Number(immuneInput.value || 0);
+    let desiredVirus  = Number(virusInput.value || 0);
+
+    // Asegurar que no pedimos más de las celdas libres
+    const maxEntities = Math.max(0, total - Math.floor(total * 0.1)); // aprox sin muros
+    const totalRequested = desiredImmune + desiredVirus;
+    if (totalRequested > maxEntities) {
+        const factor = maxEntities / totalRequested;
+        desiredImmune = Math.floor(desiredImmune * factor);
+        desiredVirus  = Math.floor(desiredVirus * factor);
+    }
+
+    // Células inmunes
+    for (let i = 0; i < desiredImmune; i++) {
+        let r, c, tries = 0;
+        do {
+            r = Math.floor(Math.random() * ROWS);
+            c = Math.floor(Math.random() * COLS);
+            tries++;
+            if (tries > total * 2) break;
+        } while (b[r][c] !== CELL.EMPTY);
+        if (b[r][c] === CELL.EMPTY) {
+            b[r][c] = CELL.IMMUNE;
+        }
+    }
+
+    // Virus
+    for (let i = 0; i < desiredVirus; i++) {
+        let r, c, tries = 0;
+        do {
+            r = Math.floor(Math.random() * ROWS);
+            c = Math.floor(Math.random() * COLS);
+            tries++;
+            if (tries > total * 2) break;
+        } while (b[r][c] !== CELL.EMPTY);
+        if (b[r][c] === CELL.EMPTY) {
+            b[r][c] = CELL.VIRUS;
+        }
+    }
+
+    // Healers y Speeders: p.ej. un 10% del total de entidades pedidas
+    const extraTotal = Math.floor((desiredImmune + desiredVirus) * 0.1);
+    const desiredHealers  = Math.floor(extraTotal / 2);
+    const desiredSpeeders = extraTotal - desiredHealers;
+
+    // Healers
+    for (let i = 0; i < desiredHealers; i++) {
+        let r, c, tries = 0;
+        do {
+            r = Math.floor(Math.random() * ROWS);
+            c = Math.floor(Math.random() * COLS);
+            tries++;
+            if (tries > total * 2) break;
+        } while (b[r][c] !== CELL.EMPTY);
+        if (b[r][c] === CELL.EMPTY) {
+            b[r][c] = CELL.HEALER;
+        }
+    }
+
+    // Speeders
+    for (let i = 0; i < desiredSpeeders; i++) {
+        let r, c, tries = 0;
+        do {
+            r = Math.floor(Math.random() * ROWS);
+            c = Math.floor(Math.random() * COLS);
+            tries++;
+            if (tries > total * 2) break;
+        } while (b[r][c] !== CELL.EMPTY);
+        if (b[r][c] === CELL.EMPTY) {
+            b[r][c] = CELL.SPEEDER;
         }
     }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-    createBoard(ROWS, COLS);
+// Pintar tablero en el DOM
+function renderBoard(b) {
+    boardElement.innerHTML = '';
+    boardElement.style.setProperty('--grid-cols', COLS);
+    boardElement.style.setProperty('--grid-rows', ROWS);
 
-    const startButton = document.getElementById('start-button');
-    startButton.addEventListener('click', () => {
-        // aquí más adelante arrancaremos la lógica del juego
-        document.getElementById('status').textContent = 'Game started!';
+    let immuneCount = 0;
+    let virusCount  = 0;
+
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            const cellDiv = document.createElement('div');
+            cellDiv.classList.add('cell');
+            cellDiv.dataset.row = r;
+            cellDiv.dataset.col = c;
+
+            const value = b[r][c];
+            switch (value) {
+                case CELL.OBST:
+                    cellDiv.classList.add('obstacle');
+                    break;
+                case CELL.IMMUNE:
+                    cellDiv.classList.add('immune');
+                    immuneCount++;
+                    break;
+                case CELL.VIRUS:
+                    cellDiv.classList.add('virus');
+                    virusCount++;
+                    break;
+                case CELL.HEALER:
+                    cellDiv.classList.add('healer');
+                    break;
+                case CELL.SPEEDER:
+                    cellDiv.classList.add('speeder');
+                    break;
+            }
+
+            boardElement.appendChild(cellDiv);
+        }
+    }
+
+    immuneCountSpan.textContent = immuneCount;
+    virusCountSpan.textContent  = virusCount;
+}
+
+// Demo de “un paso de simulación”: de momento solo mueve aleatoriamente
+function stepSimulation() {
+    const newBoard = createEmptyBoard(ROWS, COLS);
+
+    for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+            const value = board[r][c];
+            if (value === CELL.OBST || value === CELL.EMPTY) {
+                if (value === CELL.OBST) newBoard[r][c] = CELL.OBST;
+                continue;
+            }
+
+            // movimiento aleatorio sencillo (luego se sustituye por tu IA)
+            const moves = [
+                [0, 0],
+                [-1, 0], [1, 0],
+                [0, -1], [0, 1]
+            ];
+            const [dr, dc] = moves[Math.floor(Math.random() * moves.length)];
+            const nr = Math.max(0, Math.min(ROWS - 1, r + dr));
+            const nc = Math.max(0, Math.min(COLS - 1, c + dc));
+
+            // no pasar por obstáculo
+            if (board[nr][nc] === CELL.OBST) {
+                newBoard[r][c] = value;
+            } else {
+                newBoard[nr][nc] = value;
+            }
+        }
+    }
+
+    board = newBoard;
+}
+
+// Iniciar el bucle con el intervalo actual
+function startLoop() {
+    if (loopId !== null) clearInterval(loopId);
+    loopId = setInterval(() => {
+        if (!running) return;
+        stepSimulation();
+        renderBoard(board);
+    }, speedMs);
+}
+
+// Controles
+function startGame() {
+    if (running) return;
+    running = true;
+    statusText.textContent = 'Simulation running...';
+    startLoop();
+}
+
+function pauseGame() {
+    running = false;
+    statusText.textContent = 'Paused';
+}
+
+function resetGame() {
+    if (loopId !== null) {
+        clearInterval(loopId);
+        loopId = null;
+    }
+    running = false;
+    statusText.textContent = 'Ready';
+
+    board = createEmptyBoard(ROWS, COLS);
+    populateBoard(board);   // ← usa immuneInput / virusInput actuales
+    renderBoard(board);
+}
+
+// Cambio de velocidad desde el slider
+function updateSpeedFromSlider() {
+    const val = Number(speedRange.value); // 1..5
+    // mapeo simple: 1 -> lento, 5 -> rápido
+    // por ejemplo 1:800ms, 3:300ms, 5:100ms
+    const map = {
+        1: 800,
+        2: 500,
+        3: 300,
+        4: 180,
+        5: 100
+    };
+    speedMs = map[val] ?? 300;
+    if (running) {
+        startLoop(); // reinicia el intervalo con la nueva velocidad
+    }
+}
+
+function regenerateFromInputs() {
+    if (running) return; // para no romper una simulación en marcha
+    board = createEmptyBoard(ROWS, COLS);
+    populateBoard(board);
+    renderBoard(board);
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    adjustBoardSize();
+    board = createEmptyBoard(ROWS, COLS);
+    populateBoard(board);
+    renderBoard(board);
+    statusText.textContent = 'Ready';
+
+    document.getElementById('btn-start').addEventListener('click', startGame);
+    document.getElementById('btn-pause').addEventListener('click', pauseGame);
+    document.getElementById('btn-reset').addEventListener('click', resetGame);
+    speedRange.addEventListener('input', updateSpeedFromSlider);
+    updateSpeedFromSlider();
+
+    immuneInput.addEventListener('change', regenerateFromInputs);
+    virusInput.addEventListener('change', regenerateFromInputs);
+
+    window.addEventListener('resize', () => {
+        if (running) return;
+        adjustBoardSize();
+        board = createEmptyBoard(ROWS, COLS);
+        populateBoard(board);
+        renderBoard(board);
     });
 });
