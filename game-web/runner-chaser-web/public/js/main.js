@@ -44,8 +44,8 @@ function adjustBoardSize() {
 const CELL = {
     EMPTY:   0,
     OBST:    1,
-    photons:  2, // antes Runner
-    electrons:   3, // antes Chaser
+    PHOTONS:  2, // antes Runner
+    ELECTRONS:   3, // antes Chaser
     HEALER:  4,
     SPEEDER: 5
 };
@@ -100,7 +100,7 @@ function populateBoard(b) {
         desiredelectrons  = Math.floor(desiredelectrons * factor);
     }
 
-    // Células inmunes
+    // Photons
     for (let i = 0; i < desiredphotons; i++) {
         let r, c, tries = 0;
         do {
@@ -110,11 +110,11 @@ function populateBoard(b) {
             if (tries > total * 2) break;
         } while (b[r][c] !== CELL.EMPTY);
         if (b[r][c] === CELL.EMPTY) {
-            b[r][c] = CELL.photons;
+            b[r][c] = CELL.PHOTONS;
         }
     }
 
-    // electrons
+    // Electrons
     for (let i = 0; i < desiredelectrons; i++) {
         let r, c, tries = 0;
         do {
@@ -124,7 +124,7 @@ function populateBoard(b) {
             if (tries > total * 2) break;
         } while (b[r][c] !== CELL.EMPTY);
         if (b[r][c] === CELL.EMPTY) {
-            b[r][c] = CELL.electrons;
+            b[r][c] = CELL.ELECTRONS;
         }
     }
 
@@ -183,11 +183,11 @@ function renderBoard(b) {
                 case CELL.OBST:
                     cellDiv.classList.add('obstacle');
                     break;
-                case CELL.photons:
+                case CELL.PHOTONS:
                     cellDiv.classList.add('photons');
                     photonsCount++;
                     break;
-                case CELL.electrons:
+                case CELL.ELECTRONS:
                     cellDiv.classList.add('electrons');
                     electronsCount++;
                     break;

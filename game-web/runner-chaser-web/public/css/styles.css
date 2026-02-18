@@ -3,9 +3,9 @@
     --bg-color: #050509;
     --panel-bg: #0b0f1a;
     --accent:   #27f3ff;
-    --photons:   #06e806;
+    --photons:   #6654f0;
     --electrons:    #ee1010;
-    --healer:   #8a7bff;
+    --healer:   #06e806;
     --speeder:  #ff47e0;
     --grid-cols:  10;
     --grid-rows:  10;
@@ -195,13 +195,13 @@ header .subtitle {
 }
 
 /* Entidades como “partículas” brillantes */
-.cell.runner, /* photons cell */
+.cell.runner, /* photons */
 .cell.photons {
     width: 70%;
     height: 70%;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #ffffff, var(--photons) 40%, rgba(0,0,0,0) 70%);
-    box-shadow: 0 0 10px rgba(76, 255, 76, 0.8);
+    box-shadow: 0 0 10px rgba(138, 123, 255, 0.8);
 }
 
 .cell.chaser, /* electrons */
@@ -218,7 +218,7 @@ header .subtitle {
     height: 70%;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #ffffff, var(--healer) 40%, rgba(0,0,0,0) 70%);
-    box-shadow: 0 0 8px rgba(138, 123, 255, 0.8);
+    box-shadow: 0 0 10px rgba(76, 255, 76, 0.8);
 }
 
 .cell.speeder {
@@ -226,7 +226,7 @@ header .subtitle {
     height: 70%;
     border-radius: 50%;
     background: radial-gradient(circle at 30% 30%, #ffffff, var(--speeder) 40%, rgba(0,0,0,0) 70%);
-    box-shadow: 0 0 8px rgba(255, 71, 215, 0.8);
+    box-shadow: 0 0 10px rgba(255, 71, 215, 0.8);
 }
 
 /* “Muros” como zonas opacas */
