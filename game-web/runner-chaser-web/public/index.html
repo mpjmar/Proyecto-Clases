@@ -3,36 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Virus</title>
+    <title>electrons</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+	
     <div id="game-container">
         <header>
-            <h1>VIRUS</h1>
-            <p class="subtitle">Immune system vs. viral invasion</p>
+            <h1>PARTICLES</h1>
+            <p class="subtitle">Photons vs. electrons</p>
         </header>
 
         <section id="hud">
             <div class="score">
-                <span class="label">Immune cells:</span>
-                <span id="immune-count" class="value">0</span>
+                <span class="label">Photons:</span>
+                <span id="photons-count" class="value">0</span>
             </div>
             <div class="score">
-                <span class="label">Viruses:</span>
-                <span id="virus-count" class="value">0</span>
+                <span class="label">Electrons:</span>
+                <span id="electrons-count" class="value">0</span>
             </div>
         </section>
 
 		<section class="controls">
 			<label class="count-label">
-				Immune:
-				<input type="number" id="immune-input" min="0" value="50" step="10">
+				photons:
+				<input type="number" id="photons-input" min="0" value="50" step="10">
 			</label>
 
 			<label class="count-label">
-				Virus:
-				<input type="number" id="virus-input" min="0" value="50" step="10">
+				electrons:
+				<input type="number" id="electrons-input" min="0" value="50" step="10">
 			</label>
 		</section>
 
@@ -55,14 +56,13 @@
 			</label>
 
 			<label id="size-label">
-				Tamaño del tablero:
 				<label>
-					Filas:
+					Rows:
 					<input type="number" id="rows-input" min="10" value="30">
 				</label>
 				  
 				<label>
-					Columnas:
+					Columns:
 					<input type="number" id="cols-input" min="10" value="30">
 				</label>
 			</label>	
@@ -70,7 +70,7 @@
 	
 
         <footer>
-            <span>Virus • Simulation prototype</span>
+            <span>electrons • Simulation prototype</span>
         </footer>
     </div>
 

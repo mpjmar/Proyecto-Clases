@@ -8,7 +8,7 @@ function adjustBoardSize() {
     const viewportWidth  = window.innerWidth;
     const viewportHeight = window.innerHeight;
     const availableW = Math.max(200, viewportWidth * 0.75);
-    const availableH = Math.max(200, viewportHeight * 0.75);
+    const availableH = Math.max(200, viewportHeight * 0.50);
 
     let maxCols = Math.floor(availableW / minCellSize);
     let maxRows = Math.floor(availableH / minCellSize);
@@ -36,16 +36,16 @@ function adjustBoardSize() {
 
     const total = ROWS * COLS;
     const approxMaxEntities = Math.floor(total * 0.5);
-    immuneInput.max = approxMaxEntities;
-    virusInput.max = approxMaxEntities;
+    photonsInput.max = approxMaxEntities;
+    electronsInput.max = approxMaxEntities;
 }
 
 // Tipos de celda
 const CELL = {
     EMPTY:   0,
     OBST:    1,
-    IMMUNE:  2, // antes Runner
-    VIRUS:   3, // antes Chaser
+    photons:  2, // antes Runner
+    electrons:   3, // antes Chaser
     HEALER:  4,
     SPEEDER: 5
 };
@@ -57,13 +57,13 @@ let speedMs = 300;       // milisegundos entre pasos
 let userRows = null;
 let userCols = null;
 
-const immuneCountSpan = document.getElementById('immune-count');
-const virusCountSpan  = document.getElementById('virus-count');
+const photonsCountSpan = document.getElementById('photons-count');
+const electronsCountSpan  = document.getElementById('electrons-count');
 const statusText      = document.getElementById('status');
 const boardElement    = document.getElementById('board');
 const speedRange      = document.getElementById('speed-range');
-const immuneInput     = document.getElementById('immune-input');
-const virusInput      = document.getElementById('virus-input');
+const photonsInput     = document.getElementById('photons-input');
+const electronsInput      = document.getElementById('electrons-input');
 const rowsInput = document.getElementById('rows-input');
 const colsInput = document.getElementById('cols-input');
 
@@ -88,20 +88,20 @@ function populateBoard(b) {
     }
 
     // Leer valores pedidos por el usuario
-    let desiredImmune = Number(immuneInput.value || 0);
-    let desiredVirus  = Number(virusInput.value || 0);
+    let desiredphotons = Number(photonsInput.value || 0);
+    let desiredelectrons  = Number(electronsInput.value || 0);
 
     // Asegurar que no pedimos más de las celdas libres
     const maxEntities = Math.max(0, total - Math.floor(total * 0.1)); // aprox sin muros
-    const totalRequested = desiredImmune + desiredVirus;
+    const totalRequested = desiredphotons + desiredelectrons;
     if (totalRequested > maxEntities) {
         const factor = maxEntities / totalRequested;
-        desiredImmune = Math.floor(desiredImmune * factor);
-        desiredVirus  = Math.floor(desiredVirus * factor);
+        desiredphotons = Math.floor(desiredphotons * factor);
+        desiredelectrons  = Math.floor(desiredelectrons * factor);
     }
 
     // Células inmunes
-    for (let i = 0; i < desiredImmune; i++) {
+    for (let i = 0; i < desiredphotons; i++) {
         let r, c, tries = 0;
         do {
             r = Math.floor(Math.random() * ROWS);
@@ -110,12 +110,12 @@ function populateBoard(b) {
             if (tries > total * 2) break;
         } while (b[r][c] !== CELL.EMPTY);
         if (b[r][c] === CELL.EMPTY) {
-            b[r][c] = CELL.IMMUNE;
+            b[r][c] = CELL.photons;
         }
     }
 
-    // Virus
-    for (let i = 0; i < desiredVirus; i++) {
+    // electrons
+    for (let i = 0; i < desiredelectrons; i++) {
         let r, c, tries = 0;
         do {
             r = Math.floor(Math.random() * ROWS);
@@ -124,12 +124,12 @@ function populateBoard(b) {
             if (tries > total * 2) break;
         } while (b[r][c] !== CELL.EMPTY);
         if (b[r][c] === CELL.EMPTY) {
-            b[r][c] = CELL.VIRUS;
+            b[r][c] = CELL.electrons;
         }
     }
 
     // Healers y Speeders: p.ej. un 10% del total de entidades pedidas
-    const extraTotal = Math.floor((desiredImmune + desiredVirus) * 0.1);
+    const extraTotal = Math.floor((desiredphotons + desiredelectrons) * 0.1);
     const desiredHealers  = Math.floor(extraTotal / 2);
     const desiredSpeeders = extraTotal - desiredHealers;
 
@@ -168,8 +168,8 @@ function renderBoard(b) {
     boardElement.style.setProperty('--grid-cols', COLS);
     boardElement.style.setProperty('--grid-rows', ROWS);
 
-    let immuneCount = 0;
-    let virusCount  = 0;
+    let photonsCount = 0;
+    let electronsCount  = 0;
 
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
@@ -183,13 +183,13 @@ function renderBoard(b) {
                 case CELL.OBST:
                     cellDiv.classList.add('obstacle');
                     break;
-                case CELL.IMMUNE:
-                    cellDiv.classList.add('immune');
-                    immuneCount++;
+                case CELL.photons:
+                    cellDiv.classList.add('photons');
+                    photonsCount++;
                     break;
-                case CELL.VIRUS:
-                    cellDiv.classList.add('virus');
-                    virusCount++;
+                case CELL.electrons:
+                    cellDiv.classList.add('electrons');
+                    electronsCount++;
                     break;
                 case CELL.HEALER:
                     cellDiv.classList.add('healer');
@@ -203,8 +203,8 @@ function renderBoard(b) {
         }
     }
 
-    immuneCountSpan.textContent = immuneCount;
-    virusCountSpan.textContent  = virusCount;
+    photonsCountSpan.textContent = photonsCount;
+    electronsCountSpan.textContent  = electronsCount;
 }
 
 // Demo de “un paso de simulación”: de momento solo mueve aleatoriamente
@@ -280,7 +280,7 @@ function resetGame() {
     statusText.textContent = 'Ready';
 
     board = createEmptyBoard(ROWS, COLS);
-    populateBoard(board);   // ← usa immuneInput / virusInput actuales
+    populateBoard(board);   // ← usa photonsInput / electronsInput actuales
     renderBoard(board);
 }
 
@@ -343,8 +343,8 @@ window.addEventListener('DOMContentLoaded', () => {
     speedRange.addEventListener('input', updateSpeedFromSlider);
     updateSpeedFromSlider();
 
-    immuneInput.addEventListener('change', regenerateFromInputs);
-    virusInput.addEventListener('change', regenerateFromInputs);
+    photonsInput.addEventListener('change', regenerateFromInputs);
+    electronsInput.addEventListener('change', regenerateFromInputs);
 	rowsInput.addEventListener('change', updateBoardFromSizeInputs);
 	colsInput.addEventListener('change', updateBoardFromSizeInputs);
 

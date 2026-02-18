@@ -3,8 +3,8 @@
     --bg-color: #050509;
     --panel-bg: #0b0f1a;
     --accent:   #27f3ff;
-    --immune:   #06e806;
-    --virus:    #ee1010;
+    --photons:   #06e806;
+    --electrons:    #ee1010;
     --healer:   #8a7bff;
     --speeder:  #ff47e0;
     --grid-cols:  10;
@@ -78,13 +78,13 @@ header .subtitle {
     color: #b4bddf;
 }
 
-#immune-count {
-    color: var(--immune);
+#photons-count {
+    color: var(--photons);
     font-weight: 700;
 }
 
-#virus-count {
-    color: var(--virus);
+#electrons-count {
+    color: var(--electrons);
     font-weight: 700;
 }
 
@@ -164,7 +164,6 @@ header .subtitle {
 	gap: 50px;
 }
 
-/* Contenedor del tablero: mantiene proporción cuadrada y escala */
 #board-wrapper {
 	flex: 1;
     width: 100%;
@@ -196,21 +195,21 @@ header .subtitle {
 }
 
 /* Entidades como “partículas” brillantes */
-.cell.runner, /* Immune cell */
-.cell.immune {
+.cell.runner, /* photons cell */
+.cell.photons {
     width: 70%;
     height: 70%;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #ffffff, var(--immune) 40%, rgba(0,0,0,0) 70%);
+    background: radial-gradient(circle at 30% 30%, #ffffff, var(--photons) 40%, rgba(0,0,0,0) 70%);
     box-shadow: 0 0 10px rgba(76, 255, 76, 0.8);
 }
 
-.cell.chaser, /* Virus */
-.cell.virus {
+.cell.chaser, /* electrons */
+.cell.electrons {
     width: 70%;
     height: 70%;
     border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #ffffff, var(--virus) 40%, rgba(0,0,0,0) 70%);
+    background: radial-gradient(circle at 30% 30%, #ffffff, var(--electrons) 40%, rgba(0,0,0,0) 70%);
     box-shadow: 0 0 10px rgba(255, 51, 51, 0.8);
 }
 
@@ -236,6 +235,20 @@ header .subtitle {
     height: 100%;
     border-radius: 4px;
     background: #12151f;
+}
+
+/* Clase para el resplandor de los personajes */
+.glow {
+    animation: glowing 1s infinite alternate;
+}
+
+@keyframes glowing {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(255, 255, 255, 1);
+    }
 }
 
 /* Status text */
