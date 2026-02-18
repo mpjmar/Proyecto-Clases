@@ -25,11 +25,6 @@
         </section>
 
 		<section class="controls">
-			<label id="speed-label">
-				Speed:
-				<input type="range" id="speed-range" min="1" max="5" value="3">
-			</label>
-
 			<label class="count-label">
 				Immune:
 				<input type="number" id="immune-input" min="0" value="50" step="10">
@@ -52,6 +47,27 @@
 			<button id="btn-pause">Pause</button>
 			<button id="btn-reset">Reset</button>
 		</section>
+
+		<section class="bottom-controls">
+			<label id="speed-label">
+				Speed:
+				<input type="range" id="speed-range" min="1" max="5" value="3">
+			</label>
+
+			<label id="size-label">
+				Tamaño del tablero:
+				<label>
+					Filas:
+					<input type="number" id="rows-input" min="10" value="30">
+				</label>
+				  
+				<label>
+					Columnas:
+					<input type="number" id="cols-input" min="10" value="30">
+				</label>
+			</label>	
+		</section>
+	
 
         <footer>
             <span>Virus • Simulation prototype</span>

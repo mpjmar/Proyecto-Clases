@@ -2,23 +2,42 @@
 // Calcula ROWS y COLS según el tamaño de la pantalla y un tamaño mínimo de celda
 function adjustBoardSize() {
     const minCellSize = 12;
-    const maxCells    = 60;
-    const viewportSize = Math.min(window.innerWidth, window.innerHeight);
-    const available = Math.max(200, viewportSize * 0.75);
+    const maxCells = 60;
+	const cellSize = 12;
 
-    let cells = Math.floor(available / minCellSize);
-    cells = Math.max(20, Math.min(cells, maxCells));
+    const viewportWidth  = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const availableW = Math.max(200, viewportWidth * 0.75);
+    const availableH = Math.max(200, viewportHeight * 0.75);
 
-    ROWS = cells;
-    COLS = cells;
+    let maxCols = Math.floor(availableW / minCellSize);
+    let maxRows = Math.floor(availableH / minCellSize);
+
+    maxCols = Math.max(10, Math.min(maxCols, maxCells));
+    maxRows = Math.max(10, Math.min(maxRows, maxCells));
+
+    colsInput.max = maxCols;
+    rowsInput.max = maxRows;
+
+    if (!userCols || userCols > maxCols) userCols = maxCols;
+    if (!userRows || userRows > maxRows) userRows = maxRows;
+
+    COLS = userCols;
+    ROWS = userRows;
 
     boardElement.style.setProperty('--grid-cols', COLS);
     boardElement.style.setProperty('--grid-rows', ROWS);
 
+	boardElement.style.width  = (COLS * cellSize) + "px";
+	boardElement.style.height = (ROWS * cellSize) + "px";
+
+    colsInput.value = COLS;
+    rowsInput.value = ROWS;
+
     const total = ROWS * COLS;
-    const approxMaxEntities = Math.floor(total * 0.5); // por ejemplo, 50% del tablero
+    const approxMaxEntities = Math.floor(total * 0.5);
     immuneInput.max = approxMaxEntities;
-    virusInput.max  = approxMaxEntities;
+    virusInput.max = approxMaxEntities;
 }
 
 // Tipos de celda
@@ -35,6 +54,8 @@ let board = [];
 let running = false;
 let loopId = null;       // id del setInterval
 let speedMs = 300;       // milisegundos entre pasos
+let userRows = null;
+let userCols = null;
 
 const immuneCountSpan = document.getElementById('immune-count');
 const virusCountSpan  = document.getElementById('virus-count');
@@ -43,6 +64,8 @@ const boardElement    = document.getElementById('board');
 const speedRange      = document.getElementById('speed-range');
 const immuneInput     = document.getElementById('immune-input');
 const virusInput      = document.getElementById('virus-input');
+const rowsInput = document.getElementById('rows-input');
+const colsInput = document.getElementById('cols-input');
 
 // Crear tablero vacío
 function createEmptyBoard(rows, cols) {
@@ -191,10 +214,17 @@ function stepSimulation() {
     for (let r = 0; r < ROWS; r++) {
         for (let c = 0; c < COLS; c++) {
             const value = board[r][c];
-            if (value === CELL.OBST || value === CELL.EMPTY) {
-                if (value === CELL.OBST) newBoard[r][c] = CELL.OBST;
-                continue;
-            }
+            if (
+				value === CELL.OBST ||
+				value === CELL.EMPTY ||
+				value === CELL.HEALER ||
+				value === CELL.SPEEDER
+			) {
+				if (value !== CELL.EMPTY) {
+					newBoard[r][c] = value;
+				}
+				continue;
+			}
 
             // movimiento aleatorio sencillo (luego se sustituye por tu IA)
             const moves = [
@@ -272,6 +302,27 @@ function updateSpeedFromSlider() {
     }
 }
 
+function updateBoardFromSizeInputs() {
+    if (running) return;
+
+    let r = Number(rowsInput.value);
+    let c = Number(colsInput.value);
+
+    if (r < 10) r = 10;
+    if (c < 10) c = 10;
+
+    if (r > Number(rowsInput.max)) r = Number(rowsInput.max);
+    if (c > Number(colsInput.max)) c = Number(colsInput.max);
+
+    userRows = r;
+    userCols = c;
+
+    adjustBoardSize();
+    board = createEmptyBoard(ROWS, COLS);
+    populateBoard(board);
+    renderBoard(board);
+}
+
 function regenerateFromInputs() {
     if (running) return; // para no romper una simulación en marcha
     board = createEmptyBoard(ROWS, COLS);
@@ -294,6 +345,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     immuneInput.addEventListener('change', regenerateFromInputs);
     virusInput.addEventListener('change', regenerateFromInputs);
+	rowsInput.addEventListener('change', updateBoardFromSizeInputs);
+	colsInput.addEventListener('change', updateBoardFromSizeInputs);
 
     window.addEventListener('resize', () => {
         if (running) return;
