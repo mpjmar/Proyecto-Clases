@@ -257,6 +257,7 @@ header .subtitle {
     font-size: 0.85rem;
     color: #9aa4d9;
     min-height: 1.2em;
+    margin: 0;
 }
 
 /* Footer */
